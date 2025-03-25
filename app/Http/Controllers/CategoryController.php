@@ -3,14 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\CategoryModel;
+use App\Models\UserModel;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    private $userController;
 
-    private function get(int $id) 
+    public function __construct(UserController $userController)
     {
-        try 
+        $this->userController = $userController;
+    }
+
+    private function get(int $id)
+    {
+        try
         {
             if (!$id || $id <= 0)
             {
@@ -19,24 +26,24 @@ class CategoryController extends Controller
 
             $category = CategoryModel::find($id);
 
-            if (!$category) 
+            if (!$category)
             {
                 return redirect()->back()->with('warning', 'Category not found');
             }
 
             return $category;
-        } 
-        catch (\Exception $e) 
+        }
+        catch (\Exception $e)
         {
             return redirect()->route('index')->with('error', 'Error the search category');
         }
     }
 
-    private function checkName($name) 
+    private function checkName($name)
     {
         try
         {
-            if (!$name) 
+            if (!$name)
             {
                 return redirect()->back()->with('warning', 'Name is required!');
             }
@@ -45,54 +52,54 @@ class CategoryController extends Controller
             if ($check) {
                 return redirect()->back()->with('warning', 'Name unavailable!');
             }
-        }    
-        catch (\Exception $e) 
+        }
+        catch (\Exception $e)
         {
             return redirect()->route('index')->with('error', 'Error the search category');
         }
     }
 
-    public function getAll()  
+    public function getAll()
     {
-        try 
+        try
         {
             $categories = CategoryModel::where('is_active', true)->get()->toArray();
             return $categories;
         }
-        catch (\Throwable $th) 
+        catch (\Throwable $th)
         {
             return redirect()->route('index')->with('error', 'Error loading all category!');
-        }    
+        }
     }
 
-    public function getAllToAdm()  
+    public function getAllToAdm()
     {
-        try 
+        try
         {
             $categories = CategoryModel::all()->toArray();
             return view('category.getAll', compact('categories'));
         }
-        catch (\Throwable $th) 
+        catch (\Throwable $th)
         {
             return redirect()->route('index')->with('error', 'Error loading all category!');
-        }    
+        }
     }
-    
-    public function save()  
+
+    public function save()
     {
-        try 
+        try
         {
             return view('category.create');
         }
-        catch (\Throwable $th) 
+        catch (\Throwable $th)
         {
             return redirect()->route('index')->with('error', 'Error loading all category!');
-        }    
+        }
     }
 
-    public function saving(Request $r)  
+    public function saving(Request $r)
     {
-        try 
+        try
         {
             $data = $r->all();
 
@@ -103,57 +110,58 @@ class CategoryController extends Controller
             CategoryModel::create($data);
             return redirect()->route('index')->with('success', 'Category created!');
         }
-        catch (\Exception $e) 
+        catch (\Exception $e)
         {
             return redirect()->route('index')->with('error', 'Error the create category! try again later');
-        }  
+        }
     }
-    
-    public function update(int $id)  
+
+    public function update(int $id)
     {
-        try 
+        try
         {
             $category = $this->get($id);
             return view('category.update', compact('category'));
         }
-        catch (\Throwable $t) 
+        catch (\Throwable $t)
         {
             return redirect()->route('index')->with('error', 'Error loading all category!');
-        }    
+        }
     }
 
-    public function delete(int $id)  
+    public function confirmDelete(int $id)
     {
-        try 
+        try
         {
             $category = $this->get($id);
-            // return view('category.update', compact('category'));
+
+            $category->delete();
+
+            return redirect()->route('category.getAllToAdm')->with('success', 'Category deleted!');
         }
-        catch (\Throwable $t) 
+        catch (\Throwable $t)
         {
             return redirect()->route('index')->with('error', 'Error to delete category!');
-        }    
-    }
-    
-
-    public function confirmDelete(int $id)  
-    {
-        try 
-        {
-            $category = $this->get($id);
-            // return view('category.update', compact('category'));
         }
-        catch (\Throwable $t) 
+    }
+
+    public function seeCreater(int $id)
+    {
+        try
+        {
+            $user = $this->userController->get($id)->toArray();
+
+            print_r($user);
+        }
+        catch (\Throwable $t)
         {
             return redirect()->route('index')->with('error', 'Error to delete category!');
-        }    
+        }
     }
-    
 
-
-    public function updating(Request $r)  
+    public function updating(Request $r)
     {
-        try 
+        try
         {
             $data = $r->all();
 
@@ -164,15 +172,15 @@ class CategoryController extends Controller
             $category->update($data);
             return redirect()->route('category.getAllToAdm')->with('success', 'Category updated!');
         }
-        catch (\Exception $e) 
+        catch (\Exception $e)
         {
             return redirect()->route('category.getAllToAdm')->with('error', 'Error the update category');
-        }  
+        }
     }
 
-    public function changeStatus(int $id)  
+    public function changeStatus(int $id)
     {
-        try 
+        try
         {
             $category = $this->get($id);
             $category->is_active = !$category->is_active;
@@ -180,10 +188,10 @@ class CategoryController extends Controller
 
             return redirect()->route('category.getAllToAdm')->with('success', 'Category status changed!');
         }
-        catch (\Throwable $t) 
+        catch (\Throwable $t)
         {
             return redirect()->route('index')->with('error', 'Error the change status of category!');
-        }    
+        }
     }
 
 }

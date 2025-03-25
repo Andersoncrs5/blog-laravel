@@ -20,4 +20,9 @@ class UserModel extends Model
 
     public $timestamps = true; 
 
+    public function posts()
+    {
+        return $this->hasMany(PostModel::class, 'user_id', 'id');
+    }
+
 }

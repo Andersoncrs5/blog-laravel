@@ -2,14 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoryModel;
 use App\Models\UserModel;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\App;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        try
+        {
+            $categories = CategoryModel::where('is_active', true)->get()->toArray();
+            return view('home', compact('categories'));
+        }
+        catch (\Throwable $th)
+        {
+            echo $th;
+        }
+    }
+
     function login() : View | RedirectResponse
     {
         try
@@ -174,6 +189,25 @@ class UserController extends Controller
         catch (\Exception $e)
         {
             return redirect()->route('index')->with('error', 'Error during the update. Please try again later.');
+        }
+    }
+
+    public function get(int $id)
+    {
+        try
+        {
+            $user = UserModel::find($id);
+
+            if (!$user)
+            {
+                return redirect()->back()->with('warning', 'User not found');
+            }
+
+            return $user;
+        }
+        catch (\Throwable $th)
+        {
+            return redirect()->back()->with('error', 'Error the search user');
         }
     }
 

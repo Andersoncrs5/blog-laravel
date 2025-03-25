@@ -1,9 +1,9 @@
-## Blog in laravel
+# Blog in laravel
 
 status : in going
 start date : 23/03/2025
 
-features :
+## features :
 
 - Postgresql
 - fontawesome

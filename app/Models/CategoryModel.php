@@ -19,4 +19,10 @@ class CategoryModel extends Model
     protected $guarded = []; 
 
     public $timestamps = true; 
+
+    public function posts()
+    {
+        return $this->hasMany(PostModel::class);
+    }
+
 }

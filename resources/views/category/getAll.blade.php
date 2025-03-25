@@ -23,7 +23,7 @@
                         <h5>{{ $category['name'] }}</h5>
                     </div>
                     <div class="col-2">
-                        <h6>Data: {{ \Carbon\Carbon::parse($category['created_at'])->format('d/m/Y') }} </h6>  
+                        <h6>Data: {{ \Carbon\Carbon::parse($category['created_at'])->format('d/m/Y') }} </h6>
                     </div>
                     <div class="col-2">
                         @if ($category['is_active'])
@@ -34,9 +34,35 @@
                     </div>
                     <div class="col-4">
                         <a href="{{ route('category.changeStatus', ['id' => $category['id']] ) }}" class="btn btn-sm btn-warning">CHANGE STATUS</a>
-                        <a href="" class="btn btn-sm btn-success">SEE CREATER</a>
+                        <a href="{{ route('category.seeCreater', ['id' => $category['id']]) }}" class="btn btn-sm btn-success">SEE CREATER</a>
                         <a href="{{ route('category.update', ['id' => $category['id']] ) }}" class="btn btn-sm btn-warning">UPDATE</a>
-                        <a href="" class="btn btn-sm btn-danger">DELETE</a>
+                        <!-- Botão para acionar o modal -->
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content bg-secondary">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h2 class="fs-5"></h2>
+                                        <h3>Do you wish to delete this category?.</h3>
+                                        <hr>
+                                        <h3 class="text-warning" >Carefull!!!</h3>
+                                        <p class="fs-5">after deleting that category. Posts associated with this category were left uncategorized</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="window.location.href='{{ route('category.confirmDelete', ['id' => $category['id']]) }}'">Confirm Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
