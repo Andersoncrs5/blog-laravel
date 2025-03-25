@@ -52,6 +52,14 @@ Route::prefix('posts')->controller(PostController::class)->group(function() {
     Route::get('save', "save")->name('post.save');
     Route::post('saving', "saving")->name('post.saving');
 
+    Route::get('update/{id}', "update")->name('post.update');
+
+    Route::get('delete/{id}', "delete")->name('post.delete');
+
+    Route::post('updating', "updating")->name('post.updating');
+
+    Route::get('get-post/{id}', "getPost")->name('post.getPost');
+
     Route::get('post-get-by-category/{category}', "getByCategory")->name('post.getByCategory');
 
 });

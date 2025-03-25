@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CategoryModel;
+use App\Models\PostModel;
 use App\Models\UserModel;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -16,8 +17,9 @@ class UserController extends Controller
     {
         try
         {
+            $posts = PostModel::all()->toArray();
             $categories = CategoryModel::where('is_active', true)->get()->toArray();
-            return view('home', compact('categories'));
+            return view('home', compact('categories', 'posts'));
         }
         catch (\Throwable $th)
         {
@@ -63,7 +65,7 @@ class UserController extends Controller
             session()->put('active', true);
             session()->put('is_adm', $user->is_adm);
 
-            return redirect()->route('index')->with('success', 'Welcome again!');
+            return redirect()->route('index')->with('success', "Welcome again $user->name!");
         }
         catch (\Exception $e)
         {
@@ -105,7 +107,7 @@ class UserController extends Controller
             session()->put('active', true);
             session()->put('is_adm', $user->is_adm);
 
-            return redirect()->route('index')->with('success', 'Registration successful! Welcome!');
+            return redirect()->route('index')->with('success', "Registration successful! Welcome $user->name!");
         }
         catch (\Exception $e)
         {

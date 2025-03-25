@@ -14,12 +14,12 @@
                     <div>
                         <!-- Botão para abrir o modal -->
                         <a class="btn btn-warning" href="{{ route('updateUser') }}">UPDATE</a>
-                    
+
                         <!-- Botão para acionar o modal -->
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <i class="fa-solid fa-trash"></i>
                         </button>
-                    
+
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -42,18 +42,18 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                     </div>
-                    
+
                     <script>
                         var tooltipTriggerList = Array.prototype.slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
                         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                             return new bootstrap.Tooltip(tooltipTriggerEl);
                         });
                     </script>
-                    
+
                     <div>
-                        <a class="btn btn-primary" href="{{ route('index') }}">BACK</a>
+                        @include('../components/btnBack')
                     </div>
                 </div>
             </div>

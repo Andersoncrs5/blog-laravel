@@ -12,13 +12,13 @@ class UserModel extends Model
 
     protected $primaryKey = 'id';
 
-    protected $table = 'user'; 
+    protected $table = 'user';
 
-    protected $fillable = ['name', 'email', 'password', 'is_adm']; 
+    protected $fillable = ['name', 'email', 'password', 'is_adm'];
 
-    protected $guarded = []; 
+    protected $guarded = [];
 
-    public $timestamps = true; 
+    public $timestamps = true;
 
     public function posts()
     {

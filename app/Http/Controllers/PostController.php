@@ -30,10 +30,8 @@ class PostController extends Controller
 
             $data['user_id'] = session('id');
 
-
-
-            echo '<pre>';
-            print_r($data);
+            PostModel::create($data);
+            return redirect()->route('index')->with('success', 'Post created with success!!!');
         }
         catch (\Throwable $th)
         {
@@ -49,8 +47,7 @@ class PostController extends Controller
 
             $posts = $user->posts->toArray();
 
-            echo "<pre>";
-            print_r($posts);
+            return view('post.getAllOfUser', compact('posts'));
         }
         catch (\Throwable $th)
         {
@@ -70,6 +67,108 @@ class PostController extends Controller
         }
     }
 
-    
+    public function get(string $id)
+    {
+        try
+        {
+            if (!$id)
+            {
+                return redirect()->back()->with('error', 'id is required');
+            }
+
+            $post = PostModel::find($id);
+
+            if (!$post)
+            {
+                return redirect()->back()->with('warning', 'Post not found');
+            }
+
+            return $post;
+        }
+        catch (\Throwable $th)
+        {
+            return redirect()->route('index')->with('error', 'Error the get the post');
+        }
+    }
+
+    public function getPost(string $id)
+    {
+        try
+        {
+            $post = $this->get($id);
+
+            $post->viewed += 1;
+            $post->save();
+
+            return view('post.get', compact('post'));
+        }
+        catch (\Throwable $th)
+        {
+            return redirect()->route('index')->with('error', 'Error the get the post');
+        }
+    }
+
+    public function update(string $id)
+    {
+        try
+        {
+            $post = $this->get($id);
+
+            if ($post->user_id != session('id'))
+            {
+                return redirect()->back()->with('error', 'This post are not your!!');
+            }
+
+            return view('post.update', compact('post'));
+        }
+        catch (\Throwable $th)
+        {
+            return redirect()->route('index')->with('error', 'Error loading create page');
+        }
+    }
+
+    public function updating(Request $r)
+    {
+        try
+        {
+            $data = $r->all();
+            $post = $this->get($data['id']);
+
+            if ($post->user_id != session('id'))
+            {
+                return redirect()->back()->with('error', 'This post are not your!!');
+            }
+
+            $post->update($data);
+
+            return redirect()->route('post.getAllOfUser')->with('success', 'Post updated!!!');
+        }
+        catch (\Throwable $th)
+        {
+            return redirect()->route('index')->with('error', 'Error loading create page');
+        }
+    }
+
+    public function delete(string $id)
+    {
+        try
+        {
+            $post = $this->get($id);
+
+            if ($post->user_id != session('id'))
+            {
+                return redirect()->back()->with('error', 'This post are not your!!');
+            }
+
+            $post->delete();
+
+            return redirect()->route('post.getAllOfUser')->with('success', 'Post deleted!!!');
+        }
+        catch (\Throwable $th)
+        {
+            return redirect()->route('index')->with('error', 'Error loading create page');
+        }
+    }
+
 
 }

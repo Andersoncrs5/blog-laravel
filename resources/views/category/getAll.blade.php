@@ -69,7 +69,7 @@
         @empty
             <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
                 <div class="w-50 border border-2 rounded-2 p-4 text-center">
-                    <h1>No Categories</h1>
+                    <h1>No Post</h1>
                 </div>
             </div>
         @endforelse

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('followed_id');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         
-            $table->foreign('follower_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('followed_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('follower_id')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('followed_id')->references('id')->on('user')->onDelete('cascade');
         });        
     }
 
