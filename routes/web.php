@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -61,6 +62,24 @@ Route::prefix('posts')->controller(PostController::class)->group(function() {
     Route::get('get-post/{id}', "getPost")->name('post.getPost');
 
     Route::get('post-get-by-category/{category}', "getByCategory")->name('post.getByCategory');
+
+});
+
+Route::prefix('comment')->controller(CommentController::class)->group(function() {
+    Route::get('get-all-comment-of-user', "getAllCommentOfUser")->name('comment.getAllCommentOfUser');
+
+    Route::get('create-comment/{id}', "createComment")->name('comment.create');
+    Route::post('creating-comment/{id}', "creatingComment")->name('comment.creating');
+
+    Route::get('update-comment/{id}', "update")->name('comment.update');
+    Route::post('updating-comment/{id}', "updating")->name('comment.updating');
+
+    Route::get('comment-on-comment/{id}', "commentOnComment")->name('comment.commentOnComment');
+    Route::post('commenting-on-comment/{id}', "commentingOnComment")->name('comment.commentingOnComment');
+
+    Route::get('delete-comment/{id}', "delete")->name('comment.delete');
+    Route::get('get-comment/{id}', "getComment")->name('comment.getComment');
+
 
 });
 

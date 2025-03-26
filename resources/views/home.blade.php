@@ -45,8 +45,8 @@
                             </div>
                         </div>
                     @empty
-                        <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-                            <div class="w-50 border border-2 rounded-2 p-5">
+                        <div class="d-flex justify-content-center align-items-center" style="height: 90vh;">
+                            <div class="w-50 border border-2 rounded-2 p-5 text-center">
                                 <h2>NO POSTS</h2>
                             </div>
                         </div>

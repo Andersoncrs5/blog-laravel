@@ -106,7 +106,7 @@
                 </div>
             </div>
         @empty
-            <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="d-flex justify-content-center align-items-center" style="height: 89vh;">
                 <div class="w-50 border border-2 rounded-2 p-4 text-center">
                     <h1>No Posts</h1>
                 </div>

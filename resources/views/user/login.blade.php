@@ -40,10 +40,10 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-success">Submit</button>
+                        @include('../components/btnSubmit')
                         <div>
-                            <a href="{{ route('register') }}" class="btn btn-light">register</a>
-                            <a class="btn btn-primary" href="{{ route('index') }}">BACK</a>
+                            <a href="{{ route('register') }}" class="btn btn-outline-light">register</a>
+                            @include('../components/btnBack')
                         </div>
                     </div>
 

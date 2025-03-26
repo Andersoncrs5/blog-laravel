@@ -36,8 +36,10 @@
                         @enderror
                     </div>
                     <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-success">Submit</button>
-                        @include('../components/btnBack')
+                        @include('../components/btnSubmit')
+                        <div>
+                            @include('../components/btnBack')
+                        </div>
                     </div>
                     <input type="hidden" name="id" value="{{ $post->id }}" >
                 </form>

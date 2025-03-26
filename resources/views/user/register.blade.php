@@ -56,9 +56,9 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-success">Submit</button>
+                        @include('../components/btnSubmit')
                         <div>
-                            <a class="btn btn-primary" href="{{ route('index') }}">BACK</a>
+                            @include('../components/btnBack')
                         </div>
                     </div>
 

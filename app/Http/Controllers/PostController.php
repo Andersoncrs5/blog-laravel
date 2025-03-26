@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CategoryModel;
+use App\Models\CommentModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
@@ -100,7 +101,9 @@ class PostController extends Controller
             $post->viewed += 1;
             $post->save();
 
-            return view('post.get', compact('post'));
+            $comments = CommentModel::where('post_id', $id)->where('parent_id', null)->get();
+
+            return view('post.get', compact('post', 'comments'));
         }
         catch (\Throwable $th)
         {

@@ -20,6 +20,11 @@ class UserModel extends Model
 
     public $timestamps = true;
 
+    public function comments() 
+    {
+        return $this->hasMany(CommentModel::class, 'user_id', 'id');
+    }
+
     public function posts()
     {
         return $this->hasMany(PostModel::class, 'user_id', 'id');

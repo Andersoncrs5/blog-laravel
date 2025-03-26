@@ -54,8 +54,10 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-success">Submit</button>
-                        <a class="btn btn-primary" href="{{ route('index') }}">BACK</a>
+                        @include('../components/btnSubmit')
+                        <div>
+                            @include('../components/btnBack')
+                        </div>
                     </div>
                 </form>
             </div>
