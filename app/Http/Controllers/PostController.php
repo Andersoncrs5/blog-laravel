@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    private $favoritePostController;
+
+    public function __construct(FavoritePostController $f)
+    {
+        $this->favoritePostController = $f;
+    }
+
     function save()
     {
         try
@@ -101,9 +108,11 @@ class PostController extends Controller
             $post->viewed += 1;
             $post->save();
 
+            $check = $this->favoritePostController->exists($id);
+
             $comments = CommentModel::where('post_id', $id)->where('parent_id', null)->get();
 
-            return view('post.get', compact('post', 'comments'));
+            return view('post.get', compact('post', 'comments', 'check'));
         }
         catch (\Throwable $th)
         {

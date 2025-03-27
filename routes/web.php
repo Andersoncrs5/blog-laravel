@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\FavoritePostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Redirect;
@@ -81,6 +82,14 @@ Route::prefix('comment')->controller(CommentController::class)->group(function()
     Route::get('get-comment/{id}', "getComment")->name('comment.getComment');
 
 
+});
+
+Route::prefix('favorite')->controller(FavoritePostController::class)->group(function() {
+    Route::get('post-favorite-of-user', "PostFavoriteOfUser")->name('favoritePost.PostFavoriteOfUser');
+
+    Route::get('to-favorite-post/{id}', "save")->name('favoritePost.save');
+
+    Route::get('remove-favorite-post/{id}', "remove")->name('favoritePost.remove');
 });
 
 Route::fallback(function(){

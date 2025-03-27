@@ -30,4 +30,9 @@ class UserModel extends Model
         return $this->hasMany(PostModel::class, 'user_id', 'id');
     }
 
+    public function post_favorites()
+    {
+        return $this->hasMany(FavoritePostModel::class, 'user_id', 'id');
+    }
+
 }

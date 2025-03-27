@@ -22,8 +22,12 @@
                             <div class="mx-auto mt-1 ms-1 " >
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <a href="" class="btn btn-outline-light"><i class="fa-regular fa-bookmark"></i></a>
-                                        <a href="" class="btn btn-outline-light"><i class="fa-solid fa-bookmark"></i></a>
+                                        @if ($check == true)
+                                            <a href="{{ route('favoritePost.remove', ['id' => $post->id ] ) }}" class="btn btn-outline-light"><i class="fa-solid fa-bookmark"></i></a>
+                                        @else
+                                            <a href="{{ route('favoritePost.save', ['id' => $post->id ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-bookmark"></i></a>
+                                        @endif
+
                                         <a href="{{ route('comment.create', ['id' => $post->id ]) }}" class="btn btn-outline-light"><i class="fa-regular fa-comment"></i></a>
                                         @include('../components/btnBack')
                                     </div>
@@ -55,7 +59,7 @@
                                         <div class="">
                                             <a href="{{ route('comment.getComment', ['id' => $comment['id'] ]) }}" class="btn btn-sm btn-outline-light">SEE COMMENT</a>
                                         </div>
-                                        
+
                                         <div>
                                             <h5 class="ms-3" > Created at: {{ \Carbon\Carbon::parse($comment['created_at'])->format('d/m/Y') }} </h5>
                                         </div>
@@ -63,14 +67,14 @@
                                 </div>
                             </div>
                         @empty
-                            <div class="w-50 border border-2 mx-auto text-center">
-                                <h1>NO COMMENTS</h1>
+                            <div class="w-50 rounded-1 mx-auto p-3 text-center">
+                                <h2>NO COMMENTS</h2>
                             </div>
                         @endforelse
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </main>
     <footer>

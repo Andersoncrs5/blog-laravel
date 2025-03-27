@@ -36,6 +36,7 @@
                         @endif
                         <a class="btn btn-light d-block mt-1" href="{{ route('profile') }}">profile</a>
                         <a class="btn btn-light d-block mt-1" href="{{ route('post.save') }}">Create new post</a>
+                        <a class="btn btn-light d-block mt-1" href="{{ route('favoritePost.PostFavoriteOfUser') }}">See Post Favorite</a>
                         <a class="btn btn-light d-block mt-1" href="{{ route('post.getAllOfUser') }}">See my posts</a>
                         <a class="btn btn-light d-block mt-1" href="{{ route('comment.getAllCommentOfUser') }}">See my comments</a>
                         <a class="btn btn-light d-block mt-1" href="{{ route('logout') }}">logout</a>

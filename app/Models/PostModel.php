@@ -56,4 +56,10 @@ class PostModel extends Model
     {
         return $this->belongsTo(CategoryModel::class);
     }
+
+    public function post_favorites()
+    {
+        return $this->hasMany(FavoritePostModel::class, 'post_id', 'id');
+    }
+
 }
