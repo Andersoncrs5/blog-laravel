@@ -29,6 +29,7 @@
                                         @endif
 
                                         <a href="{{ route('comment.create', ['id' => $post->id ]) }}" class="btn btn-outline-light"><i class="fa-regular fa-comment"></i></a>
+                                        <a href="{{ route('post.creater', ['id' => $post->user_id ] ) }}" class="btn btn-outline-light"> <i class="fa-regular fa-circle-user"></i> </a>
                                         @include('../components/btnBack')
                                     </div>
                                     <div class="ms-1 d-flex">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\FavoritePostController;
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Redirect;
@@ -27,6 +28,9 @@ Route::controller(UserController::class)->group(function() {
     Route::get('delete', "delete")->name('delete');
 
     Route::get('logout', "logout")->name('logout');
+
+    Route::get('followers', "followers")->name('followers');
+    Route::get('following', "following")->name('following');
 
 });
 
@@ -56,6 +60,10 @@ Route::prefix('posts')->controller(PostController::class)->group(function() {
 
     Route::get('update/{id}', "update")->name('post.update');
 
+    Route::get('creater/{id}', "creater")->name('post.creater');
+
+    Route::get('see-post-of-user/{id}', "seePostOfUser")->name('post.seePostOfUser');
+
     Route::get('delete/{id}', "delete")->name('post.delete');
 
     Route::post('updating', "updating")->name('post.updating');
@@ -81,7 +89,6 @@ Route::prefix('comment')->controller(CommentController::class)->group(function()
     Route::get('delete-comment/{id}', "delete")->name('comment.delete');
     Route::get('get-comment/{id}', "getComment")->name('comment.getComment');
 
-
 });
 
 Route::prefix('favorite')->controller(FavoritePostController::class)->group(function() {
@@ -92,6 +99,13 @@ Route::prefix('favorite')->controller(FavoritePostController::class)->group(func
     Route::get('remove-favorite-post/{id}', "remove")->name('favoritePost.remove');
 });
 
+Route::prefix('follower')->controller(FollowerController::class)->group(function() {
+    Route::get('/follow/{id}', [FollowerController::class, 'follow'])->name('follower.follow');
+    Route::get('/unfollow/{id}', [FollowerController::class, 'unfollow'])->name('follower.unfollow');
+    Route::get('/followers/{id}', [FollowerController::class, 'followers'])->name('follower.followers');
+    Route::get('/following/{id}', [FollowerController::class, 'following'])->name('follower.following');
+});
+
 Route::fallback(function(){
-    return Redirect()->route('index')->with('warning', 'This rounte not exists');
+    return redirect()->route('index')->with('warning', 'This rounte not exists');
 });

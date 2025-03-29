@@ -35,4 +35,14 @@ class UserModel extends Model
         return $this->hasMany(FavoritePostModel::class, 'user_id', 'id');
     }
 
+    public function followers()
+    {
+        return $this->hasMany(FollowersModel::class, 'followed_id', 'id');
+    }
+
+    public function following()
+    {
+        return $this->hasMany(FollowersModel::class, 'follower_id', 'id');
+    }
+
 }

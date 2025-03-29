@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\CategoryModel;
+use App\Models\FollowersModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -121,7 +123,10 @@ class UserController extends Controller
         {
             $user = UserModel::find(session('id'));
 
-            return view("user.profile", compact('user'));
+            $totalFollowers = FollowersModel::where('followed_id', session('id'))->count();
+            $totalFolloweds = FollowersModel::where('follower_id', session('id'))->count();
+
+            return view("user.profile", compact('user','totalFollowers', 'totalFolloweds'));
         }
         catch (\Exception $e)
         {
@@ -160,7 +165,7 @@ class UserController extends Controller
         }
     }
 
-    function updateUser()
+    function updateUser(): RedirectResponse|View
     {
         try
         {
@@ -172,7 +177,7 @@ class UserController extends Controller
         }
     }
 
-    function updatingUser(Request $r)
+    function updatingUser(Request $r): RedirectResponse
     {
         try
         {
@@ -213,5 +218,54 @@ class UserController extends Controller
         }
     }
 
+    public function followers()
+    {
+        try 
+        {
+            $user = $this->get(session('id'));
+
+            $fs = $user->followers()->get()->toArray();
+
+            $followers = [];
+
+            foreach ($fs as $f) {
+                $d = UserModel::find($f['id'])->toArray();
+                array_push($followers, $d);
+            }
+
+            return view('user.follower', compact('followers'));
+        } 
+        catch (\Throwable $th) 
+        {
+            die($th);
+            return redirect()->back()->with('error', 'Error the search your followers');
+        }
+    }
+
+    public function following()
+    {
+        try 
+        {
+            $user = $this->get(session('id'));
+
+            $fs = $user->following()->get()->toArray();
+
+            $followers = [];
+
+            foreach ($fs as $f) {
+                $d = UserModel::find($f['id'])->toArray();
+                array_push($followers, $d);
+            }
+
+            return view('user.follower', compact('followers'));
+        } 
+        catch (\Throwable $th) 
+        {
+            die($th);
+            return redirect()->back()->with('error', 'Error the search your followers');
+        }
+    }
+
+    
 }
 

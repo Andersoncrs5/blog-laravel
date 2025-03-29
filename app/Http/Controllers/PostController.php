@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoryModel;
 use App\Models\CommentModel;
+use App\Models\FollowersModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
@@ -182,5 +183,48 @@ class PostController extends Controller
         }
     }
 
+    public function creater(int $id) 
+    {
+        try
+        {
+            $user = UserModel::find($id);
+
+            if (!$user)
+            {
+                return redirect()->back()->with('warning', 'User not found!!!');
+            }
+
+            $totalFollowers = FollowersModel::where('followed_id', session('id'))->count();
+
+            $check = FollowersModel::where('follower_id', session('id'))->where('followed_id', $id)->exists();
+
+            return view('post.creater', compact('user','totalFollowers', 'check'));
+        }
+        catch (\Throwable $th)
+        {
+            return redirect()->route('index')->with('error', 'Error loading create page');
+        }
+    }
+
+    public function seePostOfUser(int $id)
+    {
+        try
+        {
+            $user = UserModel::find($id);
+
+            if (!$user)
+            {
+                return redirect()->back()->with('warning', 'User not found!!!');
+            }
+
+            $posts = PostModel::where('user_id', $id)->get()->toArray();
+
+            return view('post.showPost', compact('posts'));
+        }
+        catch (\Throwable $th)
+        {
+            return redirect()->route('index')->with('error', 'Error loading create page');
+        }
+    }
 
 }

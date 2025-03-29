@@ -10,17 +10,19 @@
                 <h2>Email : {{$user->email}}</h2>
                 <h5>Name : {{$user->name}}</h5>
                 <h5>created_at : {{$user->created_at}}</h5>
+                <div>
+                    <p>Followers : {{ $totalFollowers }} Followeds : {{ $totalFolloweds }}</p>
+                </div>
                 <div class="d-flex justify-content-between mt-1 ">
                     <div>
-                        <!-- Botão para abrir o modal -->
-                        <a class="btn btn-warning" href="{{ route('updateUser') }}">UPDATE</a>
-
-                        <!-- Botão para acionar o modal -->
+                        <a class="btn btn-outline-primary" href="{{ route('followers') }}">FOLLOWERS</a>
+                        <a class="btn btn-outline-primary" href="{{ route('following') }}">FOLLOWEDS</a>
+                        <a class="btn btn-outline-warning" href="{{ route('updateUser') }}">UPDATE</a>
+                        
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <i class="fa-solid fa-trash"></i>
                         </button>
 
-                        <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content bg-secondary">
@@ -53,6 +55,7 @@
                     </script>
 
                     <div>
+                        
                         @include('../components/btnBack')
                     </div>
                 </div>

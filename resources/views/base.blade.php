@@ -21,5 +21,6 @@
     <body>
         @include('alerts.alert')
         @yield('content')
+        @include('../components/footer')
     </body>
 </html>

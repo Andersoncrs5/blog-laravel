@@ -30,7 +30,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        @if (session('is_adm') == false )
+                        @if (session('is_adm') == true )
                             <a class="btn btn-light d-block mt-1" href="{{ route('category.save') }}">Create New Category</a>
                             <a class="btn btn-light d-block mt-1" href="{{ route('category.getAllToAdm') }}">Get all Categories</a>
                         @endif
