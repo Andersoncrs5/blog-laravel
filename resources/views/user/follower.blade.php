@@ -18,8 +18,8 @@
     <main class="container my-4">
         @forelse ($followers as $follower)
             <div class="w-75 mt-2 mx-auto border border-2 rounded-2 p-3">
-                <h5>Name: {{ $follower['name'] }}</h5>
-                <a href="{{ route('post.creater', ['id' => $follower['id'] ]) }}" class="btn btn-outline-light" > SEE USER </a>
+                <h5>Name: {{ $follower->name }}</h5>
+                <a href="{{ route('post.creater', ['id' => $follower->id ]) }}" class="btn btn-outline-light" > SEE USER </a>
             </div>
         @empty
             <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">

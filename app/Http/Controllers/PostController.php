@@ -18,6 +18,22 @@ class PostController extends Controller
         $this->favoritePostController = $f;
     }
 
+    public function searchByTitle(Request $request)
+    {
+        try 
+        {
+            $title = $request->query('title');
+
+            $posts = PostModel::where('title', 'LIKE', "%{$title}%")->get()->toArray();
+
+            return view('post.getAll', compact('posts'));
+        } 
+        catch (\Throwable $th)
+        {
+            return redirect()->route('index')->with('error', 'Error searching posts');
+        }
+    }
+
     function save()
     {
         try
@@ -64,11 +80,13 @@ class PostController extends Controller
         }
     }
 
-    public function getByCategory(string $category)
+    public function getByCategory(int $category_id)
     {
         try
         {
-            echo $category;
+            $posts = PostModel::where('category_id',$category_id)->get()->toArray();
+
+            return view('post.getAll', compact('posts'));
         }
         catch (\Throwable $th)
         {

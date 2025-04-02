@@ -6,6 +6,7 @@ use App\Http\Controllers\FavoritePostController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +32,6 @@ Route::controller(UserController::class)->group(function() {
 
     Route::get('followers', "followers")->name('followers');
     Route::get('following', "following")->name('following');
-
 });
 
 Route::prefix('category')->controller(CategoryController::class)->group(function() {
@@ -65,6 +65,8 @@ Route::prefix('posts')->controller(PostController::class)->group(function() {
     Route::get('see-post-of-user/{id}', "seePostOfUser")->name('post.seePostOfUser');
 
     Route::get('delete/{id}', "delete")->name('post.delete');
+
+    Route::get('searchByTitle', "searchByTitle")->name('post.searchByTitle');
 
     Route::post('updating', "updating")->name('post.updating');
 
@@ -100,12 +102,29 @@ Route::prefix('favorite')->controller(FavoritePostController::class)->group(func
 });
 
 Route::prefix('follower')->controller(FollowerController::class)->group(function() {
-    Route::get('/follow/{id}', [FollowerController::class, 'follow'])->name('follower.follow');
-    Route::get('/unfollow/{id}', [FollowerController::class, 'unfollow'])->name('follower.unfollow');
-    Route::get('/followers/{id}', [FollowerController::class, 'followers'])->name('follower.followers');
-    Route::get('/following/{id}', [FollowerController::class, 'following'])->name('follower.following');
+    Route::get('/follow/{id}','follow')->name('follower.follow');
+    Route::get('/unfollow/{id}','unfollow')->name('follower.unfollow');
+    Route::get('/followers/{id}','followers')->name('follower.followers');
+    Route::get('/following/{id}','following')->name('follower.following');
+});
+
+Route::prefix('notification')->controller(NotificationController::class)->group(function() {
+    Route::get('/get/{id}','get')->name('notification.get');
+
+    Route::get('/senderAnNotification','senderAnNotification')->name('notification.senderAnNotification');
+    Route::post('/RequestsenderAnNotification','RequestsenderAnNotification')->name('notification.RequestsenderAnNotification');
+
+    Route::get('/markWithVisa/{id}','markWithVisa')->name('notification.markWithVisa');
+
+    Route::get('/countTotalNotificationNotRead','countTotalNotificationNotRead')->name('notification.countTotalNotificationNotRead');
+
+    Route::get('/get-all','getAll')->name('notification.getAll');
+
+    
+    
 });
 
 Route::fallback(function(){
     return redirect()->route('index')->with('warning', 'This rounte not exists');
 });
+

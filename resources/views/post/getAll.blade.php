@@ -1,13 +1,13 @@
 @extends('base')
 @section('title')
-    Post saves
+    Get all post of user
 @endsection
 
 @section('content')
     <header class="mb-3 container-fluid" >
         <div class="row p-2 text-center border-bottom">
             <div class="col-4">
-                <h3>Posts</h3>
+                <h3>My Posts</h3>
             </div>
             <div class="col-4"></div>
             <div class="col-4">
@@ -20,24 +20,19 @@
             <div style="width: 85%;" class="mt-2 mx-auto  p-2 border border-2 rounded-2">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h3>{{ $post->title }}</h3>
+                        <h3>{{ $post['title'] }}</h3>
                     </div>
                     @include('../components.line')
                     <div class="mx-auto mt-1" style="width: 97%" >
                         <div class="d-flex justify-content-between">
                             <div>
-                                <a href="{{ route('favoritePost.remove', ['id' => $post->id ] ) }}" class="btn btn-outline-danger">REMOVE</a>
-                                <a href="{{ route('post.getPost', ['id' => $post->id ] ) }}" class="btn btn-outline-light">SEE POST</a>
-
-                            </div>
-
+                                <a href="{{ route('post.getPost', ['id' => $post['id']] ) }}" class="btn btn-outline-light">SEE POST</a>
                             </div>
                             <div>
 
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         @empty

@@ -17,11 +17,11 @@ class FollowersModel extends Model
 
     public function follower()
     {
-        return $this->belongsTo(User::class, 'follower_id');
+        return $this->belongsTo(UserModel::class, 'follower_id');
     }
 
     public function followed()
     {
-        return $this->belongsTo(User::class, 'followed_id');
+        return $this->belongsTo(UserModel::class, 'followed_id');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\FavoritePostModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FavoritePostController extends Controller
 {
@@ -13,7 +14,6 @@ class FavoritePostController extends Controller
     {
         try
         {
-
             $data = [];
 
             $data['post_id'] = $id;
@@ -84,26 +84,17 @@ class FavoritePostController extends Controller
 
     function PostFavoriteOfUser()
     {
-        try
-        {
-            $user = UserModel::find(session('id'));
+        try {
+            $favorites = DB::select("
+                SELECT p.id, p.title 
+                FROM posts AS p
+                INNER JOIN favorite_posts AS f ON p.id = f.post_id
+                WHERE f.user_id = ?
+            ", [session('id')]);
 
-            $favorites = $user->post_favorites()->get()->toArray();
-
-            $posts = [];
-
-            foreach ($favorites as $p) {
-                $post = PostModel::find($p['post_id'])->toArray();
-                array_push($posts, $post);
-            }
-
-
-            return view('favoritePost.get', compact('posts'));
-        }
-        catch (\Exception $e)
-        {
-            echo $e;
-            return redirect()->route('index')->with('error', 'Error');
+            return view('favoritePost.get', ['posts' => $favorites]);
+        } catch (\Exception $e) {
+            return redirect()->route('index')->with('error', 'Error fetching favorite posts');
         }
     }
 

@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -220,25 +221,17 @@ class UserController extends Controller
 
     public function followers()
     {
-        try 
-        {
-            $user = $this->get(session('id'));
-
-            $fs = $user->followers()->get()->toArray();
-
-            $followers = [];
-
-            foreach ($fs as $f) {
-                $d = UserModel::find($f['id'])->toArray();
-                array_push($followers, $d);
-            }
-
+        try {    
+            $followers = DB::select("
+                SELECT u.id, u.name
+                FROM users AS u
+                INNER JOIN followers AS f ON u.id = f.follower_id
+                WHERE f.followed_id = ?
+            ", [session('id')]);
+    
             return view('user.follower', compact('followers'));
-        } 
-        catch (\Throwable $th) 
-        {
-            die($th);
-            return redirect()->back()->with('error', 'Error the search your followers');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error fetching followers');
         }
     }
 
@@ -266,6 +259,5 @@ class UserController extends Controller
         }
     }
 
-    
 }
 

@@ -15,7 +15,7 @@
                         @else
                             <select class="form-select" size="5" aria-label="size 3 select example" onchange="redirectToCategory(this)">
                                 @foreach ($categories as $category)
-                                    <option value="{{ route('post.getByCategory', ['category' => $category['name']]) }}">
+                                    <option value="{{ route('post.getByCategory', ['category' => $category['id']]) }}">
                                         {{ $category['name'] }}
                                     </option>
                                 @endforeach

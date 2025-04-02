@@ -43,7 +43,6 @@ class FollowerController extends Controller
     {
         try 
         {
-
             $userId = session('id');
 
             FollowersModel::where('follower_id', $userId)

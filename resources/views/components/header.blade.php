@@ -4,20 +4,20 @@
             <h3>Blog</h3>
         </div>
         <div class="col-6 mt-2">
-            <form action="" method="post" class="">
-                @csrf
+            <form action="{{ route('post.searchByTitle') }}" method="GET" class="">
                 <div class="mb-3 input-group">
                     <input
                         type="text"
                         class="form-control"
                         name="title"
-                        id=""
-                        aria-describedby="helpId"
+                        value="{{ request('title') }}"
                         placeholder="Search"
                     />
-                    <button type="submit" class="btn btn-outline-light" ><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button type="submit" class="btn btn-outline-light">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
                 </div>
-            </form>
+            </form>            
         </div>
         <div class="col-3 mt-2">
             @if (session('active') == true )
@@ -31,18 +31,20 @@
                     </div>
                     <div class="offcanvas-body">
                         @if (session('is_adm') == true )
-                            <a class="btn btn-light d-block mt-1" href="{{ route('category.save') }}">Create New Category</a>
-                            <a class="btn btn-light d-block mt-1" href="{{ route('category.getAllToAdm') }}">Get all Categories</a>
+                        
+                            <a class="btn btn-outline-light d-block mt-1" href="{{ route('notification.senderAnNotification') }}">Send Notification</a>
+                            <a class="btn btn-outline-light d-block mt-1" href="{{ route('category.save') }}">Create New Category</a>
+                            <a class="btn btn-outline-light d-block mt-1" href="{{ route('category.getAllToAdm') }}">Get all Categories</a>
                         @endif
-                        <a class="btn btn-light d-block mt-1" href="{{ route('profile') }}">profile</a>
-                        <a class="btn btn-light d-block mt-1" href="{{ route('post.save') }}">Create new post</a>
-                        <a class="btn btn-light d-block mt-1" href="{{ route('favoritePost.PostFavoriteOfUser') }}">See Post Favorite</a>
-                        <a class="btn btn-light d-block mt-1" href="{{ route('post.getAllOfUser') }}">See my posts</a>
-                        <a class="btn btn-light d-block mt-1" href="{{ route('comment.getAllCommentOfUser') }}">See my comments</a>
-                        <a class="btn btn-light d-block mt-1" href="{{ route('logout') }}">logout</a>
+                        <a class="btn btn-outline-light d-block mt-1" href="{{ route('profile') }}">profile</a>
+                        <a class="btn btn-outline-light d-block mt-1" href="{{ route('post.save') }}">Create new post</a>
+                        <a class="btn btn-outline-light d-block mt-1" href="{{ route('favoritePost.PostFavoriteOfUser') }}">See Post Favorite</a>
+                        <a class="btn btn-outline-light d-block mt-1" href="{{ route('post.getAllOfUser') }}">See my posts</a>
+                        <a class="btn btn-outline-light d-block mt-1" href="{{ route('comment.getAllCommentOfUser') }}">See my comments</a>
+                        <a class="btn btn-outline-light d-block mt-1" href="{{ route('logout') }}">logout</a>
                     </div>
                 </div>
-                <a class="btn btn-lg btn-outline-light" href=""><i class="fa-solid fa-bell"></i></a>
+                <a class="btn btn-lg btn-outline-light" href="{{ route('notification.getAll') }}"><i class="fa-solid fa-bell"></i></a>
             @else
                 <a class="btn btn-light btn-sm mt-1" href="{{ route('login') }}">sign in</a>
             @endif

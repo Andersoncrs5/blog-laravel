@@ -36,7 +36,6 @@ class CommentController extends Controller
     {
         try
         {
-
             $post = $this->postController->get($id);
 
             return view('comment.create', compact('id'));

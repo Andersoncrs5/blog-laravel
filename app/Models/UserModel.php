@@ -45,4 +45,14 @@ class UserModel extends Model
         return $this->hasMany(FollowersModel::class, 'follower_id', 'id');
     }
 
+    public function receivedNotifications()
+    {
+        return $this->hasMany(NotificationModel::class, 'user_id');
+    }
+
+    public function sentNotifications()
+    {
+        return $this->hasMany(NotificationModel::class, 'sender_id');
+    }
+
 }
