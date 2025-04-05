@@ -28,6 +28,20 @@
                                             <a href="{{ route('favoritePost.save', ['id' => $post->id ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-bookmark"></i></a>
                                         @endif
 
+                                        @if ($res == null)
+                                            <a href="{{ route('like.like', ['id' => $post->id ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-thumbs-up"></i> {{ $like }} </i></a>
+                                            <a href="{{ route('like.unlike', ['id' => $post->id ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-thumbs-down"></i>{{ $unlike }}</a>
+                                        @else
+                                            @if ($res->is_like== true)
+                                                <a href="{{ route('like.remover', ['id' => $post->id ] ) }}" class="btn btn-outline-light"><i class="fa-solid fa-thumbs-up"></i>{{ $like }}</a>
+                                                <a href="{{ route('like.unlike', ['id' => $post->id ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-thumbs-down"></i>{{ $unlike }}</a>
+                                            @endif
+                                            @if ($res->is_like == false)
+                                                <a href="{{ route('like.like', ['id' => $post->id ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-thumbs-up"></i></i> {{ $like }} </a>
+                                                <a href="{{ route('like.remover', ['id' => $post->id ] ) }}" class="btn btn-outline-light"><i class="fa-solid fa-thumbs-down"></i>{{ $unlike }}</a>
+                                            @endif
+                                        @endif
+                                        
                                         <a href="{{ route('comment.create', ['id' => $post->id ]) }}" class="btn btn-outline-light"><i class="fa-regular fa-comment"></i></a>
                                         <a href="{{ route('post.creater', ['id' => $post->user_id ] ) }}" class="btn btn-outline-light"> <i class="fa-regular fa-circle-user"></i> </a>
                                         @include('../components/btnBack')

@@ -1,13 +1,13 @@
 @extends('base')
 @section('title')
-    Get all post of user
+    Get all post
 @endsection
 
 @section('content')
     <header class="mb-3 container-fluid" >
         <div class="row p-2 text-center border-bottom">
             <div class="col-4">
-                <h3>My Posts</h3>
+                <h3>Posts</h3>
             </div>
             <div class="col-4"></div>
             <div class="col-4">

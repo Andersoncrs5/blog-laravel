@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
+use function Psy\debug;
+
 class UserController extends Controller
 {
     public function index()
@@ -254,8 +256,27 @@ class UserController extends Controller
         } 
         catch (\Throwable $th) 
         {
-            die($th);
             return redirect()->back()->with('error', 'Error the search your followers');
+        }
+    }
+
+    public function seeSentNotificationsByMe()
+    {
+        try 
+        {
+            $user = UserModel::find(session('id'));
+
+            if ($user->is_adm == false ) {
+                return redirect()->back()->with('error', 'You do not have permission to access this page!');
+            }
+
+            $nots = $user->sentNotifications->toArray();
+
+            return view('notification.getAll', compact('nots'));
+        } 
+        catch (\Throwable $th) 
+        {
+            return redirect()->back()->with('error', 'Error the search your notifications');
         }
     }
 

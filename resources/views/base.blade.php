@@ -15,6 +15,9 @@
                 background-color: rgb(59, 59, 59);
                 color:white;
             }
+            .wLenghtHome {
+                width: 68%;
+            }
         </style>
     </head>
 

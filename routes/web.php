@@ -7,6 +7,7 @@ use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PostLikeController;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,8 @@ Route::controller(UserController::class)->group(function() {
 
     Route::get('followers', "followers")->name('followers');
     Route::get('following', "following")->name('following');
+
+    Route::get('see-sent-notifications-by-me', "seeSentNotificationsByMe")->name('seeSentNotificationsByMe');
 });
 
 Route::prefix('category')->controller(CategoryController::class)->group(function() {
@@ -119,9 +122,14 @@ Route::prefix('notification')->controller(NotificationController::class)->group(
     Route::get('/countTotalNotificationNotRead','countTotalNotificationNotRead')->name('notification.countTotalNotificationNotRead');
 
     Route::get('/get-all','getAll')->name('notification.getAll');
+});
 
-    
-    
+Route::prefix('like')->controller(PostLikeController::class)->group(function() {
+    Route::get('like/{id}', "like")->name('like.like');
+    Route::get('unlike/{id}', "unlike")->name('like.unlike');
+    Route::get('see-my-post-like', "seeMyPostLike")->name('like.seeMyPostLike');
+    Route::get('api/get/{id}', "get")->name('like.get');
+    Route::get('remover/{id}', "remover")->name('like.remover');
 });
 
 Route::fallback(function(){

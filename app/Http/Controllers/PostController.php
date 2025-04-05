@@ -11,13 +11,6 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    private $favoritePostController;
-
-    public function __construct(FavoritePostController $f)
-    {
-        $this->favoritePostController = $f;
-    }
-
     public function searchByTitle(Request $request)
     {
         try 
@@ -107,7 +100,7 @@ class PostController extends Controller
 
             if (!$post)
             {
-                return redirect()->back()->with('warning', 'Post not found');
+                return redirect()->back()->with('error', 'Post not found');
             }
 
             return $post;
@@ -127,14 +120,26 @@ class PostController extends Controller
             $post->viewed += 1;
             $post->save();
 
-            $check = $this->favoritePostController->exists($id);
+            $favoritePostController = new FavoritePostController();
+
+            $check = $favoritePostController->exists($id);
 
             $comments = CommentModel::where('post_id', $id)->where('parent_id', null)->get();
 
-            return view('post.get', compact('post', 'comments', 'check'));
+            $likeController = new PostLikeController();
+            $res = $likeController->get($id); 
+
+            $like = $likeController->countLikeByPost($id);
+            $unlike = $likeController->countUnlikeByPost($id);
+
+            return view('post.get', compact('post',
+                 'comments', 'check', 'res',
+                 'like', 'unlike'
+                ));
         }
         catch (\Throwable $th)
         {
+            die($th);
             return redirect()->route('index')->with('error', 'Error the get the post');
         }
     }

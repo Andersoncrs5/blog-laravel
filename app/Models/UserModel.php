@@ -55,4 +55,11 @@ class UserModel extends Model
         return $this->hasMany(NotificationModel::class, 'sender_id');
     }
 
+    public function post_likes()
+    {
+        return $this->hasMany(PostLikesModel::class, 'user_id', 'id');
+    }
+
+    
+
 }

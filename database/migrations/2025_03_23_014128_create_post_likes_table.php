@@ -16,12 +16,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->uuid('post_id');
+            $table->boolean('is_like')->default(true);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
         });
-        
     }
 
     /**

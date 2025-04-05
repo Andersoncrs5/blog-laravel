@@ -62,4 +62,9 @@ class PostModel extends Model
         return $this->hasMany(FavoritePostModel::class, 'post_id', 'id');
     }
 
+    public function post_likes()
+    {
+        return $this->hasMany(PostLikesModel::class, 'post_id', 'id');
+    }
+
 }

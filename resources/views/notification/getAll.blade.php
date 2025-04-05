@@ -1,13 +1,13 @@
 @extends('base')
 @section('title')
-    all notifications of user
+    all notifications
 @endsection
 
 @section('content')
     <header class="mb-3 container-fluid" >
         <div class="row p-2 text-center border-bottom">
             <div class="col-4">
-                <h3>My notifications</h3>
+                <h3>notifications</h3>
             </div>
             <div class="col-4"></div>
             <div class="col-4">
@@ -37,6 +37,11 @@
                                     
                                 </div>
                                 <div>
+                                    @if (session('is_adm') == true )
+                                        @if ($note['is_read'] == true )
+                                            <p>User readed the notification</p>
+                                        @endif
+                                    @endif
     
                                 </div>
                             </div>
