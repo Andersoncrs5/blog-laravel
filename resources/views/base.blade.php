@@ -18,6 +18,9 @@
             .wLenghtHome {
                 width: 68%;
             }
+            .headerMain {
+                background-color: rgb(59, 59, 59);
+            }
         </style>
     </head>
 

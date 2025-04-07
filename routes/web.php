@@ -6,8 +6,10 @@ use App\Http\Controllers\FavoritePostController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CommentLikesController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostLikeController;
+use App\Models\CommentLikesModel;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -130,6 +132,14 @@ Route::prefix('like')->controller(PostLikeController::class)->group(function() {
     Route::get('see-my-post-like', "seeMyPostLike")->name('like.seeMyPostLike');
     Route::get('api/get/{id}', "get")->name('like.get');
     Route::get('remover/{id}', "remover")->name('like.remover');
+});
+
+Route::prefix('comment-like')->controller(CommentLikesController::class)->group(function() {
+    Route::get('like/{id}', "like")->name('commentLike.like');
+    Route::get('unlike/{id}', "unlike")->name('commentLike.unlike');
+    Route::get('see-my-comments-likes', "seeMyCommentLike")->name('commentLike.seeMyCommentLike');
+    Route::get('api/get/{id}', "get")->name('commentLike.get');
+    Route::get('remover/{id}', "remover")->name('commentLike.remover');
 });
 
 Route::fallback(function(){

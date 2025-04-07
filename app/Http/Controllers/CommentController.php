@@ -152,7 +152,16 @@ class CommentController extends Controller
 
             $commentsOfComment = CommentModel::where('parent_id', $id)->get()->toArray();
 
-            return view('comment.get', compact('comment', 'commentsOfComment'));
+            $likeController = new CommentLikesController();
+            $res = $likeController->get($id); 
+
+            $like = $likeController->countLikeByComment($id);
+            $unlike = $likeController->countUnlikeByComment($id);
+
+            return view('comment.get', compact(
+                'comment', 'commentsOfComment',
+                'res', 'like', 'unlike'
+            ));
         }
         catch (\Exception $e)
         {

@@ -64,4 +64,10 @@ class CommentModel extends Model
     {
         return $this->hasMany(CommentModel::class, 'parent_id');
     }
+
+    public function comment_likes()
+    {
+        return $this->hasMany(CommentLikesModel::class, 'comment_id', 'id');
+    }
+
 }

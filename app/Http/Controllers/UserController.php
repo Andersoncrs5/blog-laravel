@@ -116,6 +116,7 @@ class UserController extends Controller
         }
         catch (\Exception $e)
         {
+            die($e);
             return redirect()->route('index')->with('error', 'Error during registration. Please try again later.');
         }
     }

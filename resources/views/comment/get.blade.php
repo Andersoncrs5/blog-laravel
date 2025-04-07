@@ -17,6 +17,19 @@
                 <div class="d-flex justify-content-between">
                     <div class="">
                         <a class="btn btn-outline-light" href="{{ route('comment.commentOnComment', ['id' => $comment['id'] ]) }}">COMMENT</a>
+                        @if ($res == null)
+                            <a href="{{ route('commentLike.like', ['id' => $comment['id'] ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-thumbs-up"></i> {{ $like }} </i></a>
+                            <a href="{{ route('commentLike.unlike', ['id' => $comment['id'] ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-thumbs-down"></i>{{ $unlike }}</a>
+                        @else
+                            @if ($res->is_like== true)
+                                <a href="{{ route('commentLike.remover', ['id' => $comment['id'] ] ) }}" class="btn btn-outline-light"><i class="fa-solid fa-thumbs-up"></i>{{ $like }}</a>
+                                <a href="{{ route('commentLike.unlike', ['id' => $comment['id'] ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-thumbs-down"></i>{{ $unlike }}</a>
+                            @endif
+                            @if ($res->is_like == false)
+                                <a href="{{ route('commentLike.like', ['id' => $comment['id'] ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-thumbs-up"></i></i> {{ $like }} </a>
+                                <a href="{{ route('commentLike.remover', ['id' => $comment['id'] ] ) }}" class="btn btn-outline-light"><i class="fa-solid fa-thumbs-down"></i>{{ $unlike }}</a>
+                            @endif
+                        @endif
                     </div>
 
                     <div>
@@ -30,6 +43,7 @@
                         <div class="col-12">
                             <p> {{ $c['content'] }} </p>
                         </div>
+                        
                         @include('../components/line')
 
                         <div class="col-12">
@@ -37,6 +51,7 @@
                                 <div class="">
                                     {{-- <a class="btn btn-outline-light" href="{{ route('comment.commentOnComment', ['id' => $comment['id'] ]) }}">COMMENT</a> --}}
                                     <a href="{{ route('comment.getComment', ['id' => $c['id'] ]) }}" class="btn btn-sm btn-outline-light">SEE COMMENT</a>
+                                    
                                 </div>
         
                                 <div>

@@ -60,6 +60,8 @@ class UserModel extends Model
         return $this->hasMany(PostLikesModel::class, 'user_id', 'id');
     }
 
-    
-
+    public function comment_likes()
+    {
+        return $this->hasMany(CommentLikesModel::class, 'user_id', 'id');
+    }
 }

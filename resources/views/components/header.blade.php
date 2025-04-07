@@ -1,4 +1,4 @@
-<header class="w-100" >
+<header class="w-100 headerMain " >
     <div class="container-fluid position-fixed top-0 end-0 row text-center border-bottom">
         <div class="col-3 mt-2">
             <h3>Blog</h3>
