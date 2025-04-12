@@ -9,6 +9,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CommentLikesController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostLikeController;
+use App\Http\Controllers\RecoverPasswordController;
 use App\Models\CommentLikesModel;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -142,7 +143,14 @@ Route::prefix('comment-like')->controller(CommentLikesController::class)->group(
     Route::get('remover/{id}', "remover")->name('commentLike.remover');
 });
 
+Route::prefix('password')->controller(RecoverPasswordController::class)->group(function() {
+    Route::get('password-request-form', "requestForm")->name('password.requestForm');
+    Route::post('password-check-email', "checkEmail")->name('password.checkEmail');
+    Route::post('password-check-token/{email}', "checkToken")->name('password.checkToken');
+    Route::post('password-reset', "reset")->name('password.reset');
+    
+});
+
 Route::fallback(function(){
     return redirect()->route('index')->with('warning', 'This rounte not exists');
 });
-

@@ -1,13 +1,13 @@
 @extends('base')
 @section('title')
-    Login
+    check email
 @endsection
 
 @section('content')
     <main>
         <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
             <div class="w-50 border border-2 rounded-2 p-4">
-                <form action="{{ route('logining') }}" method="post">
+                <form action="{{ route('password.checkEmail') }}" method="post">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Email</label>
@@ -25,25 +25,9 @@
                         @enderror
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input
-                            type="password"
-                            class="form-control @error('password') is-invalid @enderror"
-                            name="password"
-                        />
-                        @error('password')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-
                     <div class="d-flex justify-content-between">
                         @include('../components/btnSubmit')
                         <div>
-                            <a href="{{ route('register') }}" class="btn btn-outline-light">register</a>
-                            <a href="{{ route('password.requestForm') }}" class="btn btn-outline-light">Forgot Password?</a>
                             @include('../components/btnBack')
                         </div>
                     </div>
@@ -52,7 +36,4 @@
             </div>
         </div>
     </main>
-    <footer>
-
-    </footer>
 @endsection

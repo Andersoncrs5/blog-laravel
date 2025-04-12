@@ -1,9 +1,8 @@
-// config/hashing.php
 <?php
 
 return [
 
-    'driver' => 'bcrypt',
+    'driver' => 'argon',
 
     'bcrypt' => [
         'rounds' => env('BCRYPT_ROUNDS', 4),
