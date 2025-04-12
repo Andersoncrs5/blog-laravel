@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->unsignedBigInteger('user_id'); 
             $table->unsignedBigInteger('sender_id')->nullable();
-            $table->string('reason');
+            $table->string('reason', 250);
             $table->text('message');
             $table->boolean('is_read')->default(false);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

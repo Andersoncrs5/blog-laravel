@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentCreateOnCommentRequest;
+use App\Http\Requests\CommentCreateRequest;
+use App\Http\Requests\CommentUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\CommentModel;
 
@@ -46,7 +49,7 @@ class CommentController extends Controller
         }
     }
 
-    public function creatingComment(Request $r, string $id)
+    public function creatingComment(CommentCreateRequest $r, string $id)
     {
         try
         {
@@ -105,7 +108,7 @@ class CommentController extends Controller
         }
     }
 
-    public function updating(Request $r, string $id)
+    public function updating(CommentUpdateRequest $r, string $id)
     {
         try
         {
@@ -184,7 +187,7 @@ class CommentController extends Controller
         }
     }
 
-    public function commentingOnComment(string $id, Request $r) 
+    public function commentingOnComment(string $id, CommentCreateOnCommentRequest $r) 
     {
         try
         {

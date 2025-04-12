@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostCreatehRequest;
+use App\Http\Requests\PostSearchRequest;
+use App\Http\Requests\PostUpdateRequest;
 use App\Models\CategoryModel;
 use App\Models\CommentModel;
 use App\Models\FollowersModel;
@@ -11,7 +14,7 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function searchByTitle(Request $request)
+    public function searchByTitle(PostSearchRequest $request)
     {
         try 
         {
@@ -40,7 +43,7 @@ class PostController extends Controller
         }
     }
 
-    public function saving(Request $r)
+    public function saving(PostCreatehRequest $r)
     {
         try
         {
@@ -163,7 +166,7 @@ class PostController extends Controller
         }
     }
 
-    public function updating(Request $r)
+    public function updating(PostUpdateRequest $r)
     {
         try
         {

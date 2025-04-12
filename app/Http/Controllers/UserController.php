@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\CategoryModel;
 use App\Models\FollowersModel;
 use App\Models\PostModel;
@@ -44,7 +47,7 @@ class UserController extends Controller
         }
     }
 
-    function logining(Request $r) : RedirectResponse
+    function logining(UserLoginRequest $r) : RedirectResponse
     {
         try
         {
@@ -88,7 +91,7 @@ class UserController extends Controller
         }
     }
 
-    function registering(Request $r) : RedirectResponse
+    function registering(UserRegisterRequest $r) : RedirectResponse
     {
         try
         {
@@ -181,7 +184,7 @@ class UserController extends Controller
         }
     }
 
-    function updatingUser(Request $r): RedirectResponse
+    function updatingUser(UserUpdateRequest $r): RedirectResponse
     {
         try
         {

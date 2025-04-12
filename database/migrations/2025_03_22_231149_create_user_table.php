@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('user', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('name', 150);
+            $table->string('email', 250)->unique();
             $table->string('password');
             $table->boolean('is_adm')->default(false);
             $table->rememberToken()->nullable();

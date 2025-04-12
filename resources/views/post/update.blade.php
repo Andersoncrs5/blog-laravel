@@ -1,6 +1,6 @@
 @extends('base')
 @section('title')
-    Create New Post
+    Update New Post
 @endsection
 
 @section('content')

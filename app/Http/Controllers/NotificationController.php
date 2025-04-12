@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NotificationCreateRequest;
 use App\Models\NotificationModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
@@ -101,7 +102,7 @@ class NotificationController extends Controller
         }
     }
 
-    public function RequestsenderAnNotification(Request $r)
+    public function RequestsenderAnNotification(NotificationCreateRequest $r)
     {
         try
         {
@@ -122,7 +123,5 @@ class NotificationController extends Controller
             return redirect()->back()->with('error', 'Erro the get notification.');
         }
     }
-
-    
 
 }

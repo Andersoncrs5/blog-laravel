@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RecoverCheckEmailRequest;
+use App\Http\Requests\RecoverCheckTokenRequest;
+use App\Http\Requests\RecoverResetRequest;
 use App\Mail\RecoverPasswordMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -37,7 +40,7 @@ class RecoverPasswordController extends Controller
         return $user;
     }
 
-    public function checkEmail(Request $r)
+    public function checkEmail(RecoverCheckEmailRequest $r)
     {
         try {
             $data = $r->all();
@@ -70,7 +73,7 @@ class RecoverPasswordController extends Controller
         }
     }
 
-    public function checkToken(string $email, Request $r)
+    public function checkToken(string $email, RecoverCheckTokenRequest $r)
     {
         try
         {
@@ -103,7 +106,7 @@ class RecoverPasswordController extends Controller
         }
     }
 
-    public function reset(Request $r)
+    public function reset(RecoverResetRequest $r)
     {
         try
         {

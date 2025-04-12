@@ -15,7 +15,6 @@
                             type="text"
                             class="form-control @error('token') is-invalid @enderror"
                             name="token"
-                            placeholder="abc@mail.com"
                             value="{{ old('token') }}"
                         />
                         @error('token')

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryCreateRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 use App\Models\CategoryModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
@@ -97,7 +99,7 @@ class CategoryController extends Controller
         }
     }
 
-    public function saving(Request $r)
+    public function saving(CategoryCreateRequest $r)
     {
         try
         {
@@ -159,7 +161,7 @@ class CategoryController extends Controller
         }
     }
 
-    public function updating(Request $r)
+    public function updating(CategoryUpdateRequest $r)
     {
         try
         {

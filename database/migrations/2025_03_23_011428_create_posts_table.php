@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('title');
+            $table->string('title', 500);
             $table->longText('content');
             $table->unsignedBigInteger('category_id');
             $table->integer('viewed')->default(0)->unsigned();
