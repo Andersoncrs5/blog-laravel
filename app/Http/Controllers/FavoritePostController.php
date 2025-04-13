@@ -14,6 +14,7 @@ class FavoritePostController extends Controller
     {
         try
         {
+            DB::transaction();
             $data = [];
 
             $data['post_id'] = $id;
@@ -28,10 +29,12 @@ class FavoritePostController extends Controller
 
             FavoritePostModel::create($data);
 
+            DB::commit();
             return redirect()->route('post.getPost', ['id' => $id ] )->with('success', 'Post saved!!!');
         }
         catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->route('post.getPost', ['id' => $id ] )->with('error', 'Error the save post!');
         }
     }
@@ -64,7 +67,7 @@ class FavoritePostController extends Controller
     {
         try
         {
-
+            DB::transaction();
             $check = FavoritePostModel::where('post_id', $id)->where('user_id', session('id'))->first();
 
             if (!$check)
@@ -72,12 +75,14 @@ class FavoritePostController extends Controller
                 return redirect()->route('post.getPost', ['id' => $id ] )->with('error', 'Error the deleted post!!!');
             }
 
-            $check->delete();
+            $check->forceDelete();
 
+            DB::commit();
             return redirect()->back()->with('success', 'Post removed!!!');
         }
         catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->route('post.getPost', ['id' => $id ] )->with('error', 'error the remove Post!!!');
         }
     }

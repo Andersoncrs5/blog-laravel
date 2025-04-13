@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Models\UserModel;
 use App\Models\RecoverPasswordModel;
+use Illuminate\Support\Facades\DB;
 
 class RecoverPasswordController extends Controller
 {
@@ -43,6 +44,7 @@ class RecoverPasswordController extends Controller
     public function checkEmail(RecoverCheckEmailRequest $r)
     {
         try {
+            DB::transaction();
             $data = $r->all();
             $user = $this->findUserByEmail($data['email']);
 
@@ -67,9 +69,11 @@ class RecoverPasswordController extends Controller
 
             Mail::to($email)->send(new RecoverPasswordMail($user, $recover));
 
+            DB::commit();
             return view('recoverPassword.checkToken', compact('email'));
         } catch (\Throwable $th) {
-            die($th);
+            DB::rollBack();
+            return redirect()->back()->with('error', 'the to check email');
         }
     }
 
@@ -77,6 +81,8 @@ class RecoverPasswordController extends Controller
     {
         try
         {
+            DB::transaction();
+
             $data = $r->all();
 
             $recover = RecoverPasswordModel::where('email', $email)->first();
@@ -98,18 +104,20 @@ class RecoverPasswordController extends Controller
 
             session()->put('emailToReset', $email);
 
+            DB::commit();
             return view('recoverPassword.reset');
         }
         catch (\Throwable $th) 
         {
-            die($th);
+            DB::rollBack();
+            return redirect()->back()->with('error', 'the to check email');
         }
     }
 
     public function reset(RecoverResetRequest $r)
     {
-        try
-        {
+        try {
+            DB::transaction();
             $data = $r->all();
 
             $email = session('emailToReset');
@@ -118,9 +126,7 @@ class RecoverPasswordController extends Controller
 
             $data['password'] = Hash::make($data['password']);
 
-            $user->password = $data['password']; 
-
-            $user->update($user);
+            $user->update(['password' => $data['password']]);
 
             session()->forget('emailToReset');
 
@@ -129,12 +135,12 @@ class RecoverPasswordController extends Controller
             session()->put('active', true);
             session()->put('is_adm', $user->is_adm);
 
-            return redirect()->route('index')->with('success', "Passoword updated $user->name!");
-        }
-        catch (\Throwable $th) 
-        {
-            die($th);
+            DB::commit();
+
+            return redirect()->route('index')->with('success', "Password updated $user->name!");
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'the to check email');
         }
     }
-
 }

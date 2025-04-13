@@ -6,6 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\FollowersModel;
 use App\Models\UserModel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class FollowerController extends Controller
@@ -14,6 +15,7 @@ class FollowerController extends Controller
     {
         try 
         {
+            DB::transaction();
             $userId = session('id');
 
             if ($userId == $id) 
@@ -31,10 +33,12 @@ class FollowerController extends Controller
                 'followed_id' => $id,
             ]);
 
+            DB::commit();
             return redirect()->back()->with('success', 'Agora você está seguindo este usuário!');
         } 
         catch (\Exception $e) 
         {
+            DB::rollBack();
             return redirect()->back()->with('error', 'Erro ao seguir o usuário.');
         }
     }
@@ -43,16 +47,19 @@ class FollowerController extends Controller
     {
         try 
         {
+            DB::transaction();
             $userId = session('id');
 
             FollowersModel::where('follower_id', $userId)
                 ->where('followed_id', $id)
                 ->delete();
 
+            DB::commit();
             return redirect()->back()->with('success', 'Você deixou de seguir este usuário.');
         } 
         catch (\Exception $e) 
         {
+            DB::rollBack();
             return redirect()->back()->with('error', 'Erro ao deixar de seguir o usuário.');
         }
     }

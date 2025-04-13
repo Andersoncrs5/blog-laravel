@@ -7,6 +7,7 @@ use App\Http\Requests\CommentCreateRequest;
 use App\Http\Requests\CommentUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\CommentModel;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
@@ -53,6 +54,7 @@ class CommentController extends Controller
     {
         try
         {
+            DB::transaction();
             $post = $this->postController->get($id);
 
             $data = $r->all();
@@ -61,11 +63,12 @@ class CommentController extends Controller
             $data['post_id'] = $id;
 
             CommentModel::create($data);
-
+            DB::commit();
             return redirect()->route('post.getPost', ['id' => $id ] )->with('success', 'Comment created with success !!!');
         }
         catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error');
         }
     }
@@ -112,16 +115,19 @@ class CommentController extends Controller
     {
         try
         {
+            DB::transaction();
             $comment = $this->get($id);
 
             $data = $r->all();
 
             $comment->update($data);
 
+            DB::commit();
             return $this->getAllCommentOfUser()->with('success', 'Comment updated!!!');
         }
         catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error');
         }
     }
@@ -130,6 +136,7 @@ class CommentController extends Controller
     {
         try
         {
+            DB::transaction();
             $comment = $this->get($id);
 
             if ($comment->user_id != session('id'))
@@ -139,10 +146,12 @@ class CommentController extends Controller
 
             $comment->delete();
 
+            DB::commit();
             return redirect()->route('comment.getAllCommentOfUser', ['id' => $id ])->with('success', 'Comment deleted!!!');
         }
         catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error');
         }
     }
@@ -191,6 +200,7 @@ class CommentController extends Controller
     {
         try
         {
+            DB::transaction();
             $data = $r->all();
 
             $data['parent_id'] = $id;
@@ -198,11 +208,12 @@ class CommentController extends Controller
 
             CommentModel::create($data);
 
+            DB::commit();
             return $this->getComment($id)->with('success','Comment created!!');
         }
         catch (\Exception $e)
         {
-            
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error');
         }
     }

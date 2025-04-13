@@ -106,6 +106,7 @@ class NotificationController extends Controller
     {
         try
         {
+            DB::transaction();
             $data = $r->all();
 
             $data['sender_id'] = session('id');
@@ -114,12 +115,12 @@ class NotificationController extends Controller
 
             NotificationModel::create($data);
 
+            DB::commit();
             return redirect()->route('index')->with('success', 'notification sended!!!.');
         }
         catch (\Exception $e) 
         {
-            echo $e;
-            die();
+            DB::rollBack();
             return redirect()->back()->with('error', 'Erro the get notification.');
         }
     }

@@ -9,11 +9,6 @@ class UserRegisterRequest extends FormRequest
     public function authorize(): bool
     {
 
-        if (session('active') == false)
-        {
-            return false;
-        }
-
         return true;
     }
 

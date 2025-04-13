@@ -11,6 +11,7 @@ use App\Models\FollowersModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -47,15 +48,18 @@ class PostController extends Controller
     {
         try
         {
+            DB::transaction();
             $data = $r->all();
 
             $data['user_id'] = session('id');
 
             PostModel::create($data);
+            DB::commit();
             return redirect()->route('index')->with('success', 'Post created with success!!!');
         }
         catch (\Throwable $th)
         {
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error loading save page');
         }
     }
@@ -170,6 +174,8 @@ class PostController extends Controller
     {
         try
         {
+            DB::transaction();
+
             $data = $r->all();
             $post = $this->get($data['id']);
 
@@ -180,10 +186,12 @@ class PostController extends Controller
 
             $post->update($data);
 
+            DB::commit();
             return redirect()->route('post.getAllOfUser')->with('success', 'Post updated!!!');
         }
         catch (\Throwable $th)
         {
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error loading create page');
         }
     }
@@ -192,6 +200,7 @@ class PostController extends Controller
     {
         try
         {
+            DB::transaction();
             $post = $this->get($id);
 
             if ($post->user_id != session('id'))
@@ -201,10 +210,12 @@ class PostController extends Controller
 
             $post->delete();
 
+            DB::commit();
             return redirect()->route('post.getAllOfUser')->with('success', 'Post deleted!!!');
         }
         catch (\Throwable $th)
         {
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error loading create page');
         }
     }

@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryUpdateRequest;
 use App\Models\CategoryModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -104,6 +105,8 @@ class CategoryController extends Controller
     {
         try
         {
+            DB::transaction();
+
             $data = $r->all();
 
             $this->checkName($data['name']);
@@ -111,10 +114,12 @@ class CategoryController extends Controller
             $data['user_id'] = session("id");
 
             CategoryModel::create($data);
+            DB::commit();
             return redirect()->route('index')->with('success', 'Category created!');
         }
         catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error the create category! try again later');
         }
     }
@@ -166,6 +171,7 @@ class CategoryController extends Controller
     {
         try
         {
+            DB::transaction();
             $data = $r->all();
 
             $category = $this->get($data['id']);
@@ -173,10 +179,12 @@ class CategoryController extends Controller
             $this->checkName($data['name']);
 
             $category->update($data);
+            DB::commit();
             return redirect()->route('category.getAllToAdm')->with('success', 'Category updated!');
         }
         catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->route('category.getAllToAdm')->with('error', 'Error the update category');
         }
     }

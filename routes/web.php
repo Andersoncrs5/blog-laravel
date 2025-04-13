@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [UserController::class, 'index'])->name('index');
 
 Route::controller(UserController::class)->group(function() {
-
+    
     Route::middleware(IsNotLogged::class)->group(function () {
         Route::get('login', "login")->name('login');
         Route::post('logining', "logining")->name('logining');
@@ -33,7 +33,6 @@ Route::controller(UserController::class)->group(function() {
         Route::post('updating-user', "updatingUser")->name('updatingUser');
 
         Route::get('delete-user', "deleteUser")->name('deleteUser');
-        //Route::post('updating-user', "updatingUser")->name('updatingUser');
 
         Route::get('profile', "profile")->name('profile');
         Route::get('delete', "delete")->name('delete');

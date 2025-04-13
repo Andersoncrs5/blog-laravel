@@ -26,7 +26,7 @@ class UserController extends Controller
     {
         try
         {
-            $posts = PostModel::paginate(50);
+            $posts = PostModel::orderBy('created_at', 'desc')->paginate(200);
             $categories = CategoryModel::where('is_active', true)->get()->toArray();
             return view('home', compact('categories', 'posts'));
         }
@@ -96,6 +96,7 @@ class UserController extends Controller
     {
         try
         {
+            DB::transaction();
             $data = $r->all();
 
             $data['email'] = trim($data['email']);
@@ -116,11 +117,12 @@ class UserController extends Controller
             session()->put('active', true);
             session()->put('is_adm', $user->is_adm);
 
+            DB::commit();
             return redirect()->route('index')->with('success', "Registration successful! Welcome $user->name!");
         }
         catch (\Exception $e)
         {
-            die($e);
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error during registration. Please try again later.');
         }
     }
@@ -144,11 +146,21 @@ class UserController extends Controller
 
     function delete()
     {
-        try {
-            echo "Inside delete operation";
-            //return redirect()->route('index')->with('msg', 'done!');
-        } catch (\Exception $e) {
-            return redirect()->route('index')->with('error', 'Error during delete operation');
+        try
+        {
+            DB::transaction();
+
+            $user = $this->get(session('id'));
+
+            $user->forceDelete();
+            DB::commit();
+
+            return redirect()->route('index')->with('success', 'User deleted!!!');
+        } 
+        catch (\Exception $e) 
+        {
+            DB::rollBack();
+            return redirect()->route('index')->with('error', 'Error loading registration page');
         }
     }
 
@@ -166,9 +178,18 @@ class UserController extends Controller
     {
         try
         {
-            echo "dentro de deleteUser";
-            //return view('user.register');
-        } catch (\Exception $e) {
+            DB::transaction();
+
+            $user = $this->get(session('id'));
+
+            $user->forceDelete();
+            DB::commit();
+
+            return redirect()->route('index')->with('success', 'User deleted!!!');
+        } 
+        catch (\Exception $e) 
+        {
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error loading registration page');
         }
     }
@@ -189,6 +210,7 @@ class UserController extends Controller
     {
         try
         {
+            DB::transaction();
             $data = $r->all();
 
 
@@ -199,10 +221,12 @@ class UserController extends Controller
 
             $user->update($data);
 
+            DB::commit();
             return redirect()->route('index')->with('success', 'Update successful!');
         }
         catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Error during the update. Please try again later.');
         }
     }

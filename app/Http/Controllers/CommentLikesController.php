@@ -40,74 +40,100 @@ class CommentLikesController extends Controller
 
     public function like(string $commentId)
     {
-        $postControl = new PostController();
-        $post = $postControl->get($commentId);
-
-        $existingLike = $this->get($commentId);
-
-        if ($existingLike && $existingLike->is_like === true) 
+        try
         {
-            return redirect()->back()->with('error', 'You already liked this post');
-        }
+            DB::transaction();
+            $postControl = new PostController();
+            $post = $postControl->get($commentId);
 
-        if ($existingLike) 
+            $existingLike = $this->get($commentId);
+
+            if ($existingLike && $existingLike->is_like === true) 
+            {
+                return redirect()->back()->with('error', 'You already liked this post');
+            }
+
+            if ($existingLike) 
+            {
+                $existingLike->forceDelete();
+            }
+
+            
+            CommentLikesModel::create([
+                'is_like' => true,
+                'user_id' => session('id'),
+                'comment_id' => $commentId,
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Post liked');
+        }
+        catch (\Throwable $th) 
         {
-            $existingLike->forceDelete();
+            DB::rollBack();
+            return redirect()->back()->with('error', 'the give like in post');
         }
-
-        CommentLikesModel::create([
-            'is_like' => true,
-            'user_id' => session('id'),
-            'comment_id' => $commentId,
-        ]);
-
-        return redirect()->back()->with('success', 'Post liked');
+        
     }
 
     public function remover(string $commentId)
     {
         try
         {
+            DB::transaction();
             $postControl = new PostController();
             $postControl->get($commentId);
             $like = $this->get($commentId);
 
             $like->forceDelete();
 
+            DB::commit();
             return redirect()->back()->with('success', 'Like or unlike removed');
         }
         catch (\Throwable $th) 
         {
+            DB::rollBack();
             return redirect()->back()->with('error', 'Error the to remove Like or unlike!!');
         }
     }
 
     public function unlike(string $commentId)
     {
-        $postControl = new PostController();
-        $post = $postControl->get($commentId);
+        try
+        {
+            DB::transaction();
+            $postControl = new PostController();
+            $post = $postControl->get($commentId);
 
-        if (!$post) {
-            return redirect()->back()->with('error', 'Post not found');
+            if (!$post) {
+                return redirect()->back()->with('error', 'Post not found');
+            }
+
+            $existingLike = $this->get($commentId);
+
+            if ($existingLike && $existingLike->is_like === false) {
+                return redirect()->back()->with('error', 'You already unliked this post');
+            }
+
+            if ($existingLike) {
+                $existingLike->forceDelete();
+            }
+
+            CommentLikesModel::create([
+                'is_like' => false,
+                'user_id' => session('id'),
+                'comment_id' => $commentId,
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Post unliked');
         }
-
-        $existingLike = $this->get($commentId);
-
-        if ($existingLike && $existingLike->is_like === false) {
-            return redirect()->back()->with('error', 'You already unliked this post');
+        catch (\Throwable $th) 
+        {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'the give like in post');
         }
-
-        if ($existingLike) {
-            $existingLike->forceDelete();
-        }
-
-        CommentLikesModel::create([
-            'is_like' => false,
-            'user_id' => session('id'),
-            'comment_id' => $commentId,
-        ]);
-
-        return redirect()->back()->with('success', 'Post unliked');
+        
     }
 
     public function countLikeByComment(string $commentId)

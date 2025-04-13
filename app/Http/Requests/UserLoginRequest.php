@@ -9,11 +9,6 @@ class UserLoginRequest extends FormRequest
     public function authorize(): bool
     {
 
-        if (session('active') == true)
-        {
-            return false;
-        }
-
         return true;
     }
 
