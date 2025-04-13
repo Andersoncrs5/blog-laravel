@@ -47,6 +47,14 @@
                 </div>
             </div>
         @endforelse
+        <div class="w-100 d-flex justify-content-between align-items-center mt-2">
+            <div>
+                {{ $posts->links() }}
+            </div>
+            <div class="text-end pe-3">
+                Showing {{ $posts->firstItem() }} to {{ $posts->lastItem() }} of {{ $posts->total() }} posts
+            </div>
+        </div>
     </main>
     <footer>
     </footer>

@@ -78,11 +78,12 @@ class CategoryController extends Controller
     {
         try
         {
-            $categories = CategoryModel::all()->toArray();
+            $categories = CategoryModel::paginate(20);
             return view('category.getAll', compact('categories'));
         }
         catch (\Throwable $th)
         {
+            die($th);
             return redirect()->route('index')->with('error', 'Error loading all category!');
         }
     }

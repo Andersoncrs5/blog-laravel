@@ -7,6 +7,7 @@ use App\Http\Requests\UserRegisterRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\CategoryModel;
 use App\Models\FollowersModel;
+use App\Models\NotificationModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
 use Illuminate\Contracts\View\View;
@@ -25,7 +26,7 @@ class UserController extends Controller
     {
         try
         {
-            $posts = PostModel::all()->toArray();
+            $posts = PostModel::paginate(50);
             $categories = CategoryModel::where('is_active', true)->get()->toArray();
             return view('home', compact('categories', 'posts'));
         }
@@ -274,7 +275,8 @@ class UserController extends Controller
                 return redirect()->back()->with('error', 'You do not have permission to access this page!');
             }
 
-            $nots = $user->sentNotifications->toArray();
+
+            $nots = NotificationModel::where('user_id', session('id'))->paginate(20);
 
             return view('notification.getAll', compact('nots'));
         } 

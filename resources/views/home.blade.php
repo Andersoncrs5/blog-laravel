@@ -50,11 +50,11 @@
             @forelse ($posts as $post)
                 <div class="row m-2 border border-1 rounded-2 ">
                     <div class="col-12 text-center p-2 ">
-                        <h5>{{ $post['title'] }}</h5>
+                        <h5>{{ $post->title }}</h5>
                     </div>
                     @include('components.line')
                     <div class="col-12 mb-2">
-                        <a href="{{ route('post.getPost', ['id' => $post['id'] ]) }}" class="btn btn-outline-light">SEE POST</a>
+                        <a href="{{ route('post.getPost', ['id' => $post->id ]) }}" class="btn btn-outline-light">SEE POST</a>
                     </div>
                 </div>
             @empty
@@ -64,6 +64,16 @@
                     </div>
                 </div>
             @endforelse
+
+            <div class="w-100 d-flex justify-content-between align-items-center mt-2">
+                <div>
+                    {{ $posts->links() }}
+                </div>
+                <div class="text-end  pe-3">
+                    Showing {{ $posts->firstItem() }} to {{ $posts->lastItem() }} of {{ $posts->total() }} posts
+                </div>
+            </div>
+                        
         </div>
 
     </main>

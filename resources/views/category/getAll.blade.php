@@ -20,22 +20,22 @@
             <div style="width: 85%;" class="mt-2 mx-auto text-center p-2 border border-2 rounded-2">
                 <div class="row">
                     <div class="col-4">
-                        <h5>{{ $category['name'] }}</h5>
+                        <h5>{{ $category->name }}</h5>
                     </div>
                     <div class="col-2">
-                        <h6>Data: {{ \Carbon\Carbon::parse($category['created_at'])->format('d/m/Y') }} </h6>
+                        <h6>Data: {{ \Carbon\Carbon::parse($category->created_at)->format('d/m/Y') }} </h6>
                     </div>
                     <div class="col-2">
-                        @if ($category['is_active'])
+                        @if ($category->is_active)
                             true
                         @else
                             false
                         @endif
                     </div>
                     <div class="col-4">
-                        <a href="{{ route('category.changeStatus', ['id' => $category['id']] ) }}" class="btn btn-sm btn-warning">CHANGE STATUS</a>
-                        <a href="{{ route('category.seeCreater', ['id' => $category['id']]) }}" class="btn btn-sm btn-success">SEE CREATER</a>
-                        <a href="{{ route('category.update', ['id' => $category['id']] ) }}" class="btn btn-sm btn-warning">UPDATE</a>
+                        <a href="{{ route('category.changeStatus', ['id' => $category->id] ) }}" class="btn btn-sm btn-warning">CHANGE STATUS</a>
+                        <a href="{{ route('category.seeCreater', ['id' => $category->id]) }}" class="btn btn-sm btn-success">SEE CREATER</a>
+                        <a href="{{ route('category.update', ['id' => $category->id] ) }}" class="btn btn-sm btn-warning">UPDATE</a>
                         <!-- Botão para acionar o modal -->
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <i class="fa-solid fa-trash"></i>
@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="window.location.href='{{ route('category.confirmDelete', ['id' => $category['id']]) }}'">Confirm Delete</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="window.location.href='{{ route('category.confirmDelete', ['id' => $category->id]) }}'">Confirm Delete</button>
                                     </div>
                                 </div>
                             </div>
@@ -73,6 +73,14 @@
                 </div>
             </div>
         @endforelse
+        <div class="w-100 d-flex justify-content-between align-items-center mt-2">
+            <div>
+                {{ $categories->links() }}
+            </div>
+            <div class="text-end pe-3">
+                Showing {{ $categories->firstItem() }} to {{ $categories->lastItem() }} of {{ $categories->total() }} categories
+            </div>
+        </div>
     </main>
     <footer>
     </footer>

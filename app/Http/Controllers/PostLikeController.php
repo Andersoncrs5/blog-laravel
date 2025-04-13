@@ -32,16 +32,14 @@ class PostLikeController extends Controller
 
     public function seeMyPostLike()
     {
-        $posts = DB::select("
-            SELECT p.* FROM posts AS p
-            INNER JOIN post_likes AS l ON p.id = l.post_id
-            WHERE l.user_id = ?
-        ", [session('id')]);
-
-        $posts = json_decode(json_encode($posts), true);
+        $posts = PostModel::select('posts.*')
+            ->join('post_likes', 'posts.id', '=', 'post_likes.post_id')
+            ->where('post_likes.user_id', session('id'))
+            ->paginate(50);
 
         return view('post.getAll', compact('posts'));
     }
+
 
     public function like(string $postId)
     {

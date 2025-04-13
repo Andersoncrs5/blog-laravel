@@ -29,16 +29,16 @@ class NotificationController extends Controller
 
     public function getAll()
     {
-        try
+        try 
         {
-            $nots = NotificationModel::where('user_id', session('id'))->get()->toArray();
-
+            $nots = NotificationModel::where('user_id', session('id'))->paginate(20);
+        
             return view('notification.getAll', compact('nots'));
-        }
+        } 
         catch (\Exception $e) 
         {
-            return redirect()->back()->with('error', 'Erro the get notification.');
-        }
+            return redirect()->back()->with('error', 'Error fetching notifications.');
+        }        
     }
 
     function countTotalNotificationNotRead()

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CommentLikesModel;
+use App\Models\CommentModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -29,13 +30,10 @@ class CommentLikesController extends Controller
 
     public function seeMyCommentLike()
     {
-        $comments = DB::select("
-            SELECT c.* FROM comments AS c
-            INNER JOIN comment_likes AS cl ON c.id = cl.comment_id
-            WHERE cl.user_id = ?
-        ", [session('id')]);
-
-        $comments = json_decode(json_encode($comments), true);
+        $comments = CommentModel::select('comments.*')
+        ->join('comment_likes', 'comments.id', '=', 'comment_likes.comment_id')
+        ->where('comment_likes.user_id', session('id'))
+        ->paginate(50);
 
         return view('comment.getAll', compact('comments'));
     }

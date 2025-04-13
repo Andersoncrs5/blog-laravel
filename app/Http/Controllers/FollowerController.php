@@ -60,7 +60,7 @@ class FollowerController extends Controller
     public function followers(int $id): View
     {
         $user = UserModel::findOrFail($id);
-        $followers = $user->followers()->with('follower')->get();
+        $followers = $user->followers()->with('follower')->paginate(50);
 
         return view('followers.index', compact('user', 'followers'));
     }
@@ -68,7 +68,7 @@ class FollowerController extends Controller
     public function following(int $id)
     {
         $user = UserModel::findOrFail($id);
-        $following = $user->following()->with('followed')->get();
+        $following = $user->following()->with('followed')->paginate(50);
 
         return view('following.index', compact('user', 'following'));
     }

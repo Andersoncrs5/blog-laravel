@@ -25,7 +25,7 @@ class CommentController extends Controller
         {
             $user = $this->userController->get(session('id'));
 
-            $comments = $user->comments()->get()->toArray();
+            $comments = $user->comments()->paginate(50);
 
             return view('comment.commentsOfUser', compact('comments'));
         }
@@ -153,7 +153,7 @@ class CommentController extends Controller
         {
             $comment = $this->get($id);
 
-            $commentsOfComment = CommentModel::where('parent_id', $id)->get()->toArray();
+            $commentsOfComment = CommentModel::where('parent_id', $id)->paginate(50);
 
             $likeController = new CommentLikesController();
             $res = $likeController->get($id); 

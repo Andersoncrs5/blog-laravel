@@ -32,6 +32,14 @@
                     <h1>NO COMMENTS</h1>
                 </div>
             @endforelse
+            <div class="w-100 d-flex justify-content-between align-items-center mt-2">
+                <div>
+                    {{ $comments->links() }}
+                </div>
+                <div class="text-end pe-3">
+                    Showing {{ $comments->firstItem() }} to {{ $comments->lastItem() }} of {{ $comments->total() }} comments
+                </div>
+            </div>
         </div>
 
     </main>

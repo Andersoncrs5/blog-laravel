@@ -66,7 +66,7 @@ class PostController extends Controller
         {
             $user = UserModel::find(session('id'));
 
-            $posts = $user->posts->toArray();
+            $posts = PostModel::where('user_id', session('id'))->paginate(50);
 
             return view('post.getAllOfUser', compact('posts'));
         }
@@ -80,7 +80,7 @@ class PostController extends Controller
     {
         try
         {
-            $posts = PostModel::where('category_id',$category_id)->get()->toArray();
+            $posts = PostModel::where('category_id',$category_id)->paginate(50);
 
             return view('post.getAll', compact('posts'));
         }
@@ -243,7 +243,7 @@ class PostController extends Controller
                 return redirect()->back()->with('warning', 'User not found!!!');
             }
 
-            $posts = PostModel::where('user_id', $id)->get()->toArray();
+            $posts = PostModel::where('user_id', $id)->get()->paginate(50);
 
             return view('post.showPost', compact('posts'));
         }

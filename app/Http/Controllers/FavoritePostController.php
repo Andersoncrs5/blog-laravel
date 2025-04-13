@@ -84,14 +84,13 @@ class FavoritePostController extends Controller
 
     function PostFavoriteOfUser()
     {
-        try {
-            $favorites = DB::select("
-                SELECT p.id, p.title 
-                FROM posts AS p
-                INNER JOIN favorite_posts AS f ON p.id = f.post_id
-                WHERE f.user_id = ?
-            ", [session('id')]);
-
+        try 
+        {
+            $favorites = PostModel::select('posts.id', 'posts.title')
+                ->join('favorite_posts', 'posts.id', '=', 'favorite_posts.post_id')
+                ->where('favorite_posts.user_id', session('id'))
+                ->paginate(50); 
+    
             return view('favoritePost.get', ['posts' => $favorites]);
         } catch (\Exception $e) {
             return redirect()->route('index')->with('error', 'Error fetching favorite posts');
