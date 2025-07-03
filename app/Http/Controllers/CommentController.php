@@ -5,26 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CommentCreateOnCommentRequest;
 use App\Http\Requests\CommentCreateRequest;
 use App\Http\Requests\CommentUpdateRequest;
+use App\Http\Services\enums\SumOrRed;
+use App\Http\Services\UserMetricService;
 use Illuminate\Http\Request;
 use App\Models\CommentModel;
 use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
-    private $userController;
-    private $postController;
-
-    public function __construct(UserController $userController, PostController $postController)
-    {
-        $this->userController = $userController;
-        $this->postController = $postController;
-    }
-
     public function getAllCommentOfUser()
     {
         try
         {
-            $user = $this->userController->get(session('id'));
+            $user = UserController::get(session('id'));
 
             $comments = $user->comments()->paginate(50);
 
@@ -58,7 +51,7 @@ class CommentController extends Controller
     {
         try
         {
-            $post = $this->postController->get($id);
+            $post = PostController::get($id);
 
             return view('comment.create', compact('id'));
         }
@@ -72,8 +65,8 @@ class CommentController extends Controller
     {
         try
         {
-            DB::transaction();
-            $post = $this->postController->get($id);
+            DB::beginTransaction();
+            $post = PostController::get($id);
 
             $data = $r->all();
 
@@ -82,6 +75,9 @@ class CommentController extends Controller
 
             CommentModel::create($data);
             DB::commit();
+
+            $metric = UserMetricService::get_metric(session('id'));
+            UserMetricService::sum_or_red_comments_count($metric, SumOrRed::SUM);
             return redirect()->route('post.getPost', ['id' => $id ] )->with('success', 'Comment created with success !!!');
         }
         catch (\Exception $e)
@@ -133,7 +129,7 @@ class CommentController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $comment = $this->get($id);
 
             $data = $r->all();
@@ -154,7 +150,7 @@ class CommentController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $comment = $this->get($id);
 
             if ($comment->user_id != session('id'))
@@ -165,6 +161,8 @@ class CommentController extends Controller
             $comment->delete();
 
             DB::commit();
+            $metric = UserMetricService::get_metric(session('id'));
+            UserMetricService::sum_or_red_comments_count($metric, SumOrRed::RED);
             return redirect()->route('comment.getAllCommentOfUser', ['id' => $id ])->with('success', 'Comment deleted!!!');
         }
         catch (\Exception $e)
@@ -205,7 +203,6 @@ class CommentController extends Controller
         {
             $comment = $this->get($id);
 
-
             return view('comment.commentOnComment', compact('comment'));
         }
         catch (\Exception $e)
@@ -218,7 +215,7 @@ class CommentController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $data = $r->all();
 
             $data['parent_id'] = $id;
@@ -235,7 +232,5 @@ class CommentController extends Controller
             return redirect()->route('index')->with('error', 'Error');
         }
     }
-
-
 
 }

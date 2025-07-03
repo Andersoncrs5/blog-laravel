@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\enums\SumOrRed;
+use App\Http\Services\UserMetricService;
 use App\Models\FavoritePostModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
@@ -14,7 +16,7 @@ class FavoritePostController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $data = [];
 
             $data['post_id'] = $id;
@@ -30,6 +32,9 @@ class FavoritePostController extends Controller
             FavoritePostModel::create($data);
 
             DB::commit();
+            $metric = UserMetricService::get_metric(session('id'));
+            UserMetricService::sum_or_red_saved_posts_count($metric, SumOrRed::SUM);
+            
             return redirect()->route('post.getPost', ['id' => $id ] )->with('success', 'Post saved!!!');
         }
         catch (\Exception $e)
@@ -67,7 +72,7 @@ class FavoritePostController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $check = FavoritePostModel::where('post_id', $id)->where('user_id', session('id'))->first();
 
             if (!$check)
@@ -78,6 +83,8 @@ class FavoritePostController extends Controller
             $check->forceDelete();
 
             DB::commit();
+            $metric = UserMetricService::get_metric(session('id'));
+            UserMetricService::sum_or_red_saved_posts_count($metric, SumOrRed::RED);
             return redirect()->back()->with('success', 'Post removed!!!');
         }
         catch (\Exception $e)

@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostCreatehRequest;
 use App\Http\Requests\PostSearchRequest;
 use App\Http\Requests\PostUpdateRequest;
+use App\Http\Services\enums\SumOrRed;
+use App\Http\Services\UserMetricService;
 use App\Models\CategoryModel;
 use App\Models\CommentModel;
 use App\Models\FollowersModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,25 +47,38 @@ class PostController extends Controller
         }
     }
 
-    public function saving(PostCreatehRequest $r)
+    public function saving(PostCreatehRequest $r): RedirectResponse
     {
-        try
-        {
-            DB::transaction();
-            $data = $r->all();
+        try 
+        {            
+            DB::transaction(function () use ($r) 
+            {    
+                $data = $r->validated();
+   
+                $userId = session('id');
+                
+                if (!$userId) { throw new \Exception('User not authenticated.'); }
 
-            $data['user_id'] = session('id');
+                $data['user_id'] = $userId;
 
-            PostModel::create($data);
-            DB::commit();
-            return redirect()->route('index')->with('success', 'Post created with success!!!');
-        }
-        catch (\Throwable $th)
-        {
-            DB::rollBack();
-            return redirect()->route('index')->with('error', 'Error loading save page');
+                PostModel::create($data);                 
+                $metric = UserMetricService::get_metric($userId);
+                UserMetricService::sum_or_red_posts_count($metric, SumOrRed::SUM);
+            });
+
+            
+            return redirect()->route('index')->with('success', 'Post criado com sucesso!!!');
+
+        } catch (\Throwable $th) {
+            
+            if ($th->getMessage() === 'User not authenticated.') {
+                 return redirect()->route('login')->with('error', 'Você precisa estar logado para criar um post.');
+            }
+
+            return redirect()->route('index')->with('error', 'Erro ao salvar o post. Por favor, tente novamente mais tarde.');
         }
     }
+
 
     public function getAllOfUser()
     {
@@ -98,8 +114,6 @@ class PostController extends Controller
         }
     }
 
-
-
     public function getByCategory(int $category_id)
     {
         try
@@ -114,7 +128,7 @@ class PostController extends Controller
         }
     }
 
-    public function get(string $id)
+    public static function get(string $id)
     {
         try
         {
@@ -220,7 +234,7 @@ class PostController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $post = $this->get($id);
 
             if ($post->user_id != session('id'))
@@ -231,6 +245,8 @@ class PostController extends Controller
             $post->delete();
 
             DB::commit();
+            $metric = UserMetricService::get_metric(session('id'));
+            UserMetricService::sum_or_red_posts_count($metric, SumOrRed::RED);
             return redirect()->route('post.getAllOfUser')->with('success', 'Post deleted!!!');
         }
         catch (\Throwable $th)

@@ -2,10 +2,11 @@
 
 namespace App\Http\Services;
 
+use App\Http\Services\enums\SumOrRed;
 use App\Models\UserMetricModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
-use SumOrRed;
+
 
 class UserMetricService 
 {
@@ -47,168 +48,6 @@ class UserMetricService
             die($th);
             DB::rollBack();
             return redirect()->back()->with("error", "Error the create user metric! Try again later");
-        }
-    }
-
-    public static function sum_or_red_likes_given_count_in_comment(UserMetricModel $metric, SumOrRed $action)
-    {
-        try
-        {
-            DB::beginTransaction();
-
-            if ($action == SumOrRed::SUM)
-            {
-                $metric->likes_given_count_in_comment += 1;
-            }
-
-            if ($action == SumOrRed::RED)
-            {
-                $metric->likes_given_count_in_comment -= 1;
-            }
-
-            $metric->save();
-
-            DB::commit();
-        }
-        catch (\Throwable $th) 
-        {
-            DB::rollBack();
-            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
-        }
-    }
-
-    public static function sum_or_red_dislikes_given_count_in_comment(UserMetricModel $metric, SumOrRed $action)
-    {
-        try
-        {
-            DB::beginTransaction();
-
-            if ($action == SumOrRed::SUM)
-            {
-                $metric->dislikes_given_count_in_comment += 1;
-            }
-
-            if ($action == SumOrRed::RED)
-            {
-                $metric->dislikes_given_count_in_comment -= 1;
-            }
-
-            $metric->save();
-
-            DB::commit();
-        }
-        catch (\Throwable $th) 
-        {
-            DB::rollBack();
-            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
-        }
-    }
-
-    public static function sum_or_red_likes_given_count_in_post(UserMetricModel $metric, SumOrRed $action)
-    {
-        try
-        {
-            DB::beginTransaction();
-
-            if ($action == SumOrRed::SUM)
-            {
-                $metric->likes_given_count_in_post += 1;
-            }
-
-            if ($action == SumOrRed::RED)
-            {
-                $metric->likes_given_count_in_post -= 1;
-            }
-
-            $metric->save();
-
-            DB::commit();
-        }
-        catch (\Throwable $th) 
-        {
-            DB::rollBack();
-            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
-        }
-    }
-
-    public static function sum_or_red_deslikes_given_count_in_post(UserMetricModel $metric, SumOrRed $action)
-    {
-        try
-        {
-            DB::beginTransaction();
-
-            if ($action == SumOrRed::SUM)
-            {
-                $metric->deslikes_given_count_in_post += 1;
-            }
-
-            if ($action == SumOrRed::RED)
-            {
-                $metric->deslikes_given_count_in_post -= 1;
-            }
-
-            $metric->save();
-
-            DB::commit();
-        }
-        catch (\Throwable $th) 
-        {
-            DB::rollBack();
-            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
-        }
-    }
-
-    public static function sum_or_red_followers_count(UserMetricModel $metric, SumOrRed $action)
-    {
-        try
-        {
-            DB::beginTransaction();
-
-            if ($action == SumOrRed::SUM)
-            {
-                $metric->followers_count += 1;
-            }
-
-            if ($action == SumOrRed::RED)
-            {
-                $metric->followers_count -= 1;
-            }
-
-            $metric->save();
-
-            DB::commit();
-        }
-        catch (\Throwable $th) 
-        {
-            DB::rollBack();
-            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
-        }
-    }
-
-    public static function sum_or_red_following_count(UserMetricModel $metric, SumOrRed $action)
-    {
-        try
-        {
-            DB::beginTransaction();
-
-            if ($action == SumOrRed::SUM)
-            {
-                $metric->following_count += 1;
-            }
-
-            if ($action == SumOrRed::RED)
-            {
-                $metric->following_count -= 1;
-            }
-
-            $metric->save();
-
-            DB::commit();
-        }
-        catch (\Throwable $th) 
-        {
-            DB::rollBack();
-            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
         }
     }
 
@@ -496,6 +335,168 @@ class UserMetricService
             if ($action == SumOrRed::RED)
             {
                 $metric->preference_count -= 1;
+            }
+
+            $metric->save();
+
+            DB::commit();
+        }
+        catch (\Throwable $th) 
+        {
+            DB::rollBack();
+            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
+        }
+    }
+
+    public static function sum_or_red_likes_given_count_in_comment(UserMetricModel $metric, SumOrRed $action)
+    {
+        try
+        {
+            DB::beginTransaction();
+
+            if ($action == SumOrRed::SUM)
+            {
+                $metric->likes_given_count_in_comment += 1;
+            }
+
+            if ($action == SumOrRed::RED)
+            {
+                $metric->likes_given_count_in_comment -= 1;
+            }
+
+            $metric->save();
+
+            DB::commit();
+        }
+        catch (\Throwable $th) 
+        {
+            DB::rollBack();
+            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
+        }
+    }
+
+    public static function sum_or_red_dislikes_given_count_in_comment(UserMetricModel $metric, SumOrRed $action)
+    {
+        try
+        {
+            DB::beginTransaction();
+
+            if ($action == SumOrRed::SUM)
+            {
+                $metric->dislikes_given_count_in_comment += 1;
+            }
+
+            if ($action == SumOrRed::RED)
+            {
+                $metric->dislikes_given_count_in_comment -= 1;
+            }
+
+            $metric->save();
+
+            DB::commit();
+        }
+        catch (\Throwable $th) 
+        {
+            DB::rollBack();
+            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
+        }
+    }
+
+    public static function sum_or_red_likes_given_count_in_post(UserMetricModel $metric, SumOrRed $action)
+    {
+        try
+        {
+            DB::beginTransaction();
+
+            if ($action == SumOrRed::SUM)
+            {
+                $metric->likes_given_count_in_post += 1;
+            }
+
+            if ($action == SumOrRed::RED)
+            {
+                $metric->likes_given_count_in_post -= 1;
+            }
+
+            $metric->save();
+
+            DB::commit();
+        }
+        catch (\Throwable $th) 
+        {
+            DB::rollBack();
+            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
+        }
+    }
+
+    public static function sum_or_red_deslikes_given_count_in_post(UserMetricModel $metric, SumOrRed $action)
+    {
+        try
+        {
+            DB::beginTransaction();
+
+            if ($action == SumOrRed::SUM)
+            {
+                $metric->deslikes_given_count_in_post += 1;
+            }
+
+            if ($action == SumOrRed::RED)
+            {
+                $metric->deslikes_given_count_in_post -= 1;
+            }
+
+            $metric->save();
+
+            DB::commit();
+        }
+        catch (\Throwable $th) 
+        {
+            DB::rollBack();
+            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
+        }
+    }
+
+    public static function sum_or_red_followers_count(UserMetricModel $metric, SumOrRed $action)
+    {
+        try
+        {
+            DB::beginTransaction();
+
+            if ($action == SumOrRed::SUM)
+            {
+                $metric->followers_count += 1;
+            }
+
+            if ($action == SumOrRed::RED)
+            {
+                $metric->followers_count -= 1;
+            }
+
+            $metric->save();
+
+            DB::commit();
+        }
+        catch (\Throwable $th) 
+        {
+            DB::rollBack();
+            return redirect()->route('index')->with('error', 'Error during sum or red metric user. Please try again later.');
+        }
+    }
+
+    public static function sum_or_red_following_count(UserMetricModel $metric, SumOrRed $action)
+    {
+        try
+        {
+            DB::beginTransaction();
+
+            if ($action == SumOrRed::SUM)
+            {
+                $metric->following_count += 1;
+            }
+
+            if ($action == SumOrRed::RED)
+            {
+                $metric->following_count -= 1;
             }
 
             $metric->save();
