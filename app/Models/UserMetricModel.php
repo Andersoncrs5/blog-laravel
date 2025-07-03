@@ -13,7 +13,7 @@ class UserMetricModel extends Model
 
     protected $primaryKey = 'id';
 
-    protected $table = 'user';
+    protected $table = 'user_metric';
 
     protected $fillable = [
         'likes_given_count_in_comment', 

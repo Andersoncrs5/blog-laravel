@@ -5,17 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Http\Services\UserMetricService;
 use App\Models\CategoryModel;
 use App\Models\FollowersModel;
 use App\Models\NotificationModel;
 use App\Models\PostModel;
 use App\Models\UserModel;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
 use function Psy\debug;
@@ -94,9 +92,10 @@ class UserController extends Controller
 
     function registering(UserRegisterRequest $r) : RedirectResponse
     {
+        DB::beginTransaction();
+
         try
         {
-            DB::transaction();
             $data = $r->all();
 
             $data['email'] = trim($data['email']);
@@ -116,6 +115,8 @@ class UserController extends Controller
             session()->put('email', $user->email);
             session()->put('active', true);
             session()->put('is_adm', $user->is_adm);
+
+            UserMetricService::create_metric($user->id);
 
             DB::commit();
             return redirect()->route('index')->with('success', "Registration successful! Welcome $user->name!");
@@ -148,7 +149,7 @@ class UserController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
 
             $user = $this->get(session('id'));
 
@@ -178,7 +179,7 @@ class UserController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
 
             $user = $this->get(session('id'));
 
@@ -210,9 +211,8 @@ class UserController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $data = $r->all();
-
 
             $data['email'] = session('email');
             $data['password'] = Hash::make($data['password']);
