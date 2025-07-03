@@ -23,7 +23,6 @@
             </div>
         </div>
 
-        <!-- Sidebar direita fixa -->
         <div class="position-fixed px-1 end-0 border-start" style="top: 10%; height: calc(100vh - 70px); width: 16.66%; z-index: 820;">
             @if (session('active') == true )
                 @if (session('is_adm') == true )
@@ -45,7 +44,6 @@
             
         </div>
 
-        <!-- Conteúdo central com margem para não ficar por baixo das sidebars -->
         <div class="mx-auto wLenghtHome " style="margin-top: 5.5%; margin-left: 16.66%; margin-right: 16.66%;">
             @forelse ($posts as $post)
                 <div class="row m-2 border border-1 rounded-2 ">

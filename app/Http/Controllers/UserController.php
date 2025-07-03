@@ -134,10 +134,9 @@ class UserController extends Controller
         {
             $user = UserModel::find(session('id'));
 
-            $totalFollowers = FollowersModel::where('followed_id', session('id'))->count();
-            $totalFolloweds = FollowersModel::where('follower_id', session('id'))->count();
+            $metric = UserMetricService::get_metric($user->id);
 
-            return view("user.profile", compact('user','totalFollowers', 'totalFolloweds'));
+            return view("user.profile", compact('user', 'metric'));
         }
         catch (\Exception $e)
         {
@@ -231,7 +230,7 @@ class UserController extends Controller
         }
     }
 
-    public function get(int $id)
+    public static function get(int $id)
     {
         try
         {

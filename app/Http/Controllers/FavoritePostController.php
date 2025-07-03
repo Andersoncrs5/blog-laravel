@@ -102,5 +102,25 @@ class FavoritePostController extends Controller
         }
     }
 
+    function PostFavoriteOfAnotherUser(int $id)
+    {
+        try 
+        {
+            if ($id <= 0) 
+            {
+                return redirect()->back()->with('error', 'Id is required');
+            }
+
+            $favorites = PostModel::select('posts.id', 'posts.title')
+                ->join('favorite_posts', 'posts.id', '=', 'favorite_posts.post_id')
+                ->where('favorite_posts.user_id', $id)
+                ->paginate(50); 
+    
+            return view('favoritePost.get', ['posts' => $favorites]);
+        } catch (\Exception $e) {
+            return redirect()->route('index')->with('error', 'Error fetching favorite posts');
+        }
+    }
+
 
 }

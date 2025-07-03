@@ -80,6 +80,26 @@ class PostController extends Controller
         }
     }
 
+    public function getAllOfAnotherUser(int $id)
+    {
+        try
+        {
+            $user = UserModel::find($id);
+
+            if ($user == null){ return redirect()->back()->with('error', 'User not found'); }
+
+            $posts = PostModel::where('user_id', session('id'))->paginate(50);
+
+            return view('post.getAllOfUser', compact('posts'));
+        }
+        catch (\Throwable $th)
+        {
+            return redirect()->route('index')->with('error', 'Error loading create page');
+        }
+    }
+
+
+
     public function getByCategory(int $category_id)
     {
         try

@@ -3,19 +3,20 @@
 namespace App\Http\Services;
 
 use App\Models\UserMetricModel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use SumOrRed;
 
 class UserMetricService 
 {
-    public static function get_metric(int $id)
+    public static function get_metric(int $id): UserMetricModel | RedirectResponse
     {
         if (!$id || $id <= 0)
         {
             return redirect()->back()->with("error", "User id is required");
         }
 
-        $metric = UserMetricModel::where('user_id', $id);
+        $metric = UserMetricModel::where('user_id', $id)->first();
 
         if ($metric == null)
         {

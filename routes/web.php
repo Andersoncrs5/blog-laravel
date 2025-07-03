@@ -85,6 +85,8 @@ Route::prefix('posts')->controller(PostController::class)->group(function() {
     Route::middleware(IsLogged::class)->group(function () {
         Route::get('getAllOfUser', "getAllOfUser")->name('post.getAllOfUser');
 
+        Route::get('/{id}/get-all-another-user', "getAllOfAnotherUser")->name('post.getAllOfAnotherUser');
+
         Route::get('save', "save")->name('post.save');
         Route::post('saving', "saving")->name('post.saving');
 
@@ -98,6 +100,7 @@ Route::prefix('posts')->controller(PostController::class)->group(function() {
 Route::prefix('comment')->controller(CommentController::class)->group(function() {
     Route::middleware(IsLogged::class)->group(function () {
         Route::get('get-all-comment-of-user', "getAllCommentOfUser")->name('comment.getAllCommentOfUser');
+        Route::get('{id}/get-all-comment-of-another-user', "getAllCommentOfAnotherUser")->name('comment.getAllCommentOfAnotherUser');
 
         Route::get('create-comment/{id}', "createComment")->name('comment.create');
         Route::post('creating-comment/{id}', "creatingComment")->name('comment.creating');
@@ -116,6 +119,7 @@ Route::prefix('comment')->controller(CommentController::class)->group(function()
 Route::prefix('favorite')->controller(FavoritePostController::class)->group(function() {
     Route::middleware(IsLogged::class)->group(function () {
         Route::get('post-favorite-of-user', "PostFavoriteOfUser")->name('favoritePost.PostFavoriteOfUser');
+        Route::get('/{id}/post-favorite-of-user', "PostFavoriteOfAnotherUser")->name('favoritePost.PostFavoriteOfAnotherUser');
 
         Route::get('to-favorite-post/{id}', "save")->name('favoritePost.save');
 
@@ -175,6 +179,7 @@ Route::prefix('password')->controller(RecoverPasswordController::class)->group(f
         Route::post('password-reset', "reset")->name('password.reset');
     });
 });
+
 
 Route::fallback(function(){
     return redirect()->route('index')->with('warning', 'This rounte not exists');

@@ -36,6 +36,24 @@ class CommentController extends Controller
         }
     }
 
+    public function getAllCommentOfAnotherUser(int $id)
+    {
+        try
+        {
+            if ($id <= 0) { return redirect()->back()->with('error', 'Id is required'); }
+
+            $user = UserController::get($id);
+
+            $comments = $user->comments()->paginate(50);
+
+            return view('comment.commentsOfUser', compact('comments'));
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->route('index')->with('error', 'Error');
+        }
+    }
+
     public function createComment(string $id)
     {
         try
