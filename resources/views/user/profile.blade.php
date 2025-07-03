@@ -93,9 +93,8 @@
                                     @if ($user->id != session('id'))
                                         <a class=" my-1 btn btn-sm btn-primary" href="{{ route('post.getAllOfAnotherUser', ["id" => $user->id ]) }}">SEE POSTS</a>
                                         <a class=" my-1 btn btn-sm btn-primary" href="{{ route('favoritePost.PostFavoriteOfAnotherUser', ["id" => $user->id ]) }}">SEE POSTS FAVORITE</a>
-                                        
+                                        <a class=" my-1 btn btn-sm btn-primary" href="{{ route('comment.getAllCommentOfAnotherUser', ["id" => $user->id ]) }}" >SEE COMMENTS</a>                                    
                                     @endif
-                                    <a class=" my-1 btn btn-sm btn-primary" href="{{ route('comment.getAllCommentOfAnotherUser', ["id" => $user->id ]) }}" >SEE COMMENTS</a>
                                     <a class=" my-1 btn btn-sm btn-primary" href="">SEE COMMENTS FAVORITE</a>    
                                 </ul>
                             </div>

@@ -30,7 +30,7 @@
                     </div>
                 </div>
             @empty
-                <div class="w-50 border border-2 mx-auto text-center">
+                <div class="w-50 border p-4 border-2 mx-auto text-center">
                     <h1>NO COMMENTS</h1>
                 </div>
             @endforelse
