@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserMetricModel extends Model
@@ -32,9 +33,15 @@ class UserMetricModel extends Model
         'edited_count',
         'play_list_count',
         'preference_count',
+        'user_id'
     ];
 
     protected $guarded = [];
 
     public $timestamps = true;
+
+    public function user(): BelongsTo 
+    {
+        return $this->belongsTo(UserModel::class);
+    }
 }

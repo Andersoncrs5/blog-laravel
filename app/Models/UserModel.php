@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserModel extends Model
@@ -64,4 +66,10 @@ class UserModel extends Model
     {
         return $this->hasMany(CommentLikesModel::class, 'user_id', 'id');
     }
+
+    public function user_metric(): HasOne
+    {
+        return $this->hasOne(UserMetricModel::class);
+    }
+
 }
