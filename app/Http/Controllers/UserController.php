@@ -24,7 +24,7 @@ class UserController extends Controller
     {
         try
         {
-            $posts = PostModel::orderBy('created_at', 'desc')->paginate(200);
+            $posts = PostModel::orderBy('created_at', 'desc')->paginate(150);
             $categories = CategoryModel::where('is_active', true)->get()->toArray();
             return view('home', compact('categories', 'posts'));
         }

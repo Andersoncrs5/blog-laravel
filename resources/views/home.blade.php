@@ -5,7 +5,6 @@
     @include('components.header')
 
     <main class="container-fluid">
-        <!-- Sidebar esquerda fixa -->
         <div class="position-fixed start-0 border-end" style="top: 10%; height: calc(100vh - 70px); width: 16.66%; z-index: 1020;">
             <div class="mt-1 px-1 text-center">
                 <h5>CATEGORIES</h5>

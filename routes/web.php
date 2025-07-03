@@ -12,8 +12,6 @@ use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\RecoverPasswordController;
 use App\Http\Middleware\IsLogged;
 use App\Http\Middleware\IsNotLogged;
-use App\Models\CommentLikesModel;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class, 'index'])->name('index');

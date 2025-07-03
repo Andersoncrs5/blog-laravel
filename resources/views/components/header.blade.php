@@ -21,6 +21,7 @@
         </div>
         <div class="col-3 mt-2">
             @if (session('active') == true )
+                <a class="btn btn-outline-light btn-lg"><i class="fa-solid fa-filter"></i></a>
                 <a class="btn btn-outline-light btn-lg" href="{{ route('profile') }}"><i class="fa-solid fa-circle-user"></i></a>
                 <a class="btn btn-lg btn-outline-light" href="{{ route('notification.getAll') }}"><i class="fa-solid fa-bell"></i></a>
                 <a class="btn btn-lg btn-outline-light" href="{{ route('logout') }}"><i class="fa-solid fa-right-from-bracket"></i></a>
