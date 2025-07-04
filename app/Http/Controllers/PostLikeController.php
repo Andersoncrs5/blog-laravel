@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\enums\SumOrRed;
+use App\Http\Services\PostMetricService;
 use App\Http\Services\UserMetricService;
 use App\Models\PostLikesModel;
 use App\Models\PostModel;
@@ -57,8 +58,10 @@ class PostLikeController extends Controller
         try
         {
             DB::beginTransaction();
-            $postControl = new PostController();
-            $post = $postControl->get($postId);
+            PostController::get($postId);
+
+            $metric = UserMetricService::get_metric(session('id'));
+            $metric_post = PostMetricService::get_metric($postId);
     
             $existingLike = $this->get($postId);
     
@@ -78,8 +81,8 @@ class PostLikeController extends Controller
                 'post_id' => $postId,
             ]);
     
-            $metric = UserMetricService::get_metric(session('id'));
             UserMetricService::sum_or_red_likes_given_count_in_post($metric, SumOrRed::SUM);
+            PostMetricService::sum_or_red_like_count($metric_post, SumOrRed::SUM);
 
             DB::commit();
             return redirect()->back()->with('success', 'Post liked');
@@ -89,7 +92,6 @@ class PostLikeController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', 'The give like in post');
         }
-        
     }
 
     public function remover(string $postId)
@@ -97,11 +99,12 @@ class PostLikeController extends Controller
         try
         {
             DB::beginTransaction();
-            $postControl = new PostController();
 
             $metric = UserMetricService::get_metric(session('id'));
+            $metric_post = PostMetricService::get_metric($postId);
 
-            $postControl->get($postId);
+            PostController::get($postId);
+
             $like = $this->get($postId);
 
             $like->forceDelete();
@@ -109,12 +112,13 @@ class PostLikeController extends Controller
             if ($like->is_like == true)
             {
                 UserMetricService::sum_or_red_likes_given_count_in_post($metric, SumOrRed::RED);
+                PostMetricService::sum_or_red_like_count($metric_post, SumOrRed::RED);
             }
             else 
             {
                 UserMetricService::sum_or_red_deslikes_given_count_in_post($metric, SumOrRed::RED);
+                PostMetricService::sum_or_red_dislikes_count($metric_post, SumOrRed::RED);
             }
-
 
             DB::commit();
             return redirect()->back()->with('success', 'Like or unlike removed');
@@ -131,8 +135,10 @@ class PostLikeController extends Controller
         try
         {
             DB::beginTransaction();
-            $postControl = new PostController();
-            $post = $postControl->get($postId);
+            $post = PostController::get($postId);
+
+            $metric = UserMetricService::get_metric(session('id'));
+            $metric_post = PostMetricService::get_metric($postId);
     
             if (!$post) {
                 return redirect()->back()->with('error', 'Post not found');
@@ -152,8 +158,8 @@ class PostLikeController extends Controller
                 'post_id' => $postId,
             ]);
     
-            $metric = UserMetricService::get_metric(session('id'));
             UserMetricService::sum_or_red_deslikes_given_count_in_post($metric, SumOrRed::SUM);
+            PostMetricService::sum_or_red_dislikes_count($metric_post, SumOrRed::SUM);
 
             DB::commit();
             return redirect()->back()->with('success', 'Post unliked');

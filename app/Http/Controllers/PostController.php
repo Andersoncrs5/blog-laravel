@@ -6,6 +6,7 @@ use App\Http\Requests\PostCreateRequest;
 use App\Http\Requests\PostSearchRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Http\Services\enums\SumOrRed;
+use App\Http\Services\PostMetricService;
 use App\Http\Services\UserMetricService;
 use App\Models\CategoryModel;
 use App\Models\CommentModel;
@@ -26,7 +27,7 @@ class PostController extends Controller
 
             $posts = PostModel::where('title', 'LIKE', "%{$title}%")->get()->toArray();
 
-            return view('post.getAll', compact('posts'));
+            // return view('post.getAll', compact('posts'));
         } 
         catch (\Throwable $th)
         {
@@ -137,7 +138,7 @@ class PostController extends Controller
 
             $post = PostModel::where('id', $id)->first();
 
-            if ($post == null)
+            if (!$post)
             {
                 return redirect()->back()->with('error', 'Post not found');
             }
@@ -155,9 +156,9 @@ class PostController extends Controller
         try
         {
             $post = $this->get($id);
-
-            $post->viewed += 1;
-            $post->save();
+            
+            $metric_post = PostMetricService::get_metric($id);
+            PostMetricService::sum_or_red_viewed_count($metric_post, SumOrRed::SUM);
 
             $check = FavoritePostController::exists($id);
 
@@ -169,10 +170,10 @@ class PostController extends Controller
             $like = $likeController->countLikeByPost($id);
             $unlike = $likeController->countUnlikeByPost($id);
 
-            return view('post.get', compact('post',
-                 'comments', 'check', 'res',
-                 'like', 'unlike'
-                ));
+            return view('post.get', compact(
+                'post','comments', 'check', 
+                'res', 'like', 'unlike'
+            ));
         }
         catch (\Throwable $th)
         {
@@ -217,6 +218,10 @@ class PostController extends Controller
             $post->update($data);
 
             DB::commit();
+
+            $metric_post = PostMetricService::get_metric($post->id);
+            PostMetricService::sum_or_red_edited_count($metric_post, SumOrRed::SUM);
+
             return redirect()->route('post.getAllOfUser')->with('success', 'Post updated!!!');
         }
         catch (\Throwable $th)

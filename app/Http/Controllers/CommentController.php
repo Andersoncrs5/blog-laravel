@@ -6,6 +6,7 @@ use App\Http\Requests\CommentCreateOnCommentRequest;
 use App\Http\Requests\CommentCreateRequest;
 use App\Http\Requests\CommentUpdateRequest;
 use App\Http\Services\enums\SumOrRed;
+use App\Http\Services\PostMetricService;
 use App\Http\Services\UserMetricService;
 use Illuminate\Http\Request;
 use App\Models\CommentModel;
@@ -77,7 +78,10 @@ class CommentController extends Controller
             DB::commit();
 
             $metric = UserMetricService::get_metric(session('id'));
+            $metric_post = PostMetricService::get_metric($id);
+
             UserMetricService::sum_or_red_comments_count($metric, SumOrRed::SUM);
+            PostMetricService::sum_or_red_comments_count($metric_post, SumOrRed::SUM);
             return redirect()->route('post.getPost', ['id' => $id ] )->with('success', 'Comment created with success !!!');
         }
         catch (\Exception $e)
@@ -161,8 +165,13 @@ class CommentController extends Controller
             $comment->delete();
 
             DB::commit();
+
             $metric = UserMetricService::get_metric(session('id'));
+            $metric_post = PostMetricService::get_metric($comment->post_id);
+
             UserMetricService::sum_or_red_comments_count($metric, SumOrRed::RED);
+            PostMetricService::sum_or_red_comments_count($metric_post, SumOrRed::RED);
+            
             return redirect()->route('comment.getAllCommentOfUser', ['id' => $id ])->with('success', 'Comment deleted!!!');
         }
         catch (\Exception $e)
