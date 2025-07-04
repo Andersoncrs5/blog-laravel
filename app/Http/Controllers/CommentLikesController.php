@@ -95,8 +95,7 @@ class CommentLikesController extends Controller
         try
         {
             DB::beginTransaction();
-            $postControl = new PostController();
-            $postControl->get($commentId);
+            PostController::get($commentId);
             $like = $this->get($commentId);
 
             $like->forceDelete();
@@ -107,13 +106,14 @@ class CommentLikesController extends Controller
             {
                 UserMetricService::sum_or_red_likes_given_count_in_comment($metric, SumOrRed::RED);
             }
-            else 
+
+            if ($like->is_like == false)
             {
                 UserMetricService::sum_or_red_dislikes_given_count_in_comment($metric, SumOrRed::RED);
             }
 
             DB::commit();
-            return redirect()->back()->with('success', 'Like or unlike removed');
+            return redirect()->back()->with('success', $like->is_like? "Like" : "unlike" . " removed");
         }
         catch (\Throwable $th) 
         {
@@ -150,7 +150,7 @@ class CommentLikesController extends Controller
                 'comment_id' => $commentId,
             ]);
 
-            UserMetricService::sum_or_red_dislikes_given_count_in_comment($metric, SumOrRed::RED);
+            UserMetricService::sum_or_red_dislikes_given_count_in_comment($metric, SumOrRed::SUM);
 
             DB::commit();
             return redirect()->back()->with('success', 'Post unliked');

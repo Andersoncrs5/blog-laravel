@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\enums\SumOrRed;
+use App\Http\Services\UserMetricService;
 use App\Models\CommentFavoriteModel;
 use App\Models\CommentModel;
 use App\Models\PostModel;
@@ -39,6 +41,10 @@ class CommentFavoriteController extends Controller
             }
             
             CommentFavoriteModel::create($data);
+
+            $metric = UserMetricService::get_metric(session('id'));
+            UserMetricService::sum_or_red_saved_comments_count($metric, SumOrRed::SUM);
+
             DB::commit();
             return redirect()->route('comment.getComment', ['id' => $id ])->with('success','Comment saved!');
         }
@@ -70,6 +76,9 @@ class CommentFavoriteController extends Controller
 
             $favorite->forceDelete();
             
+            $metric = UserMetricService::get_metric(session('id'));
+            UserMetricService::sum_or_red_saved_comments_count($metric, SumOrRed::RED);
+
             DB::commit();
             return redirect()->route('comment.getComment', ['id' => $id ])->with('success','Comment removed!');
         }
@@ -78,7 +87,6 @@ class CommentFavoriteController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error','Error the to remove comment how favorite');
         }
-        
     }
 
     public static function exists(string $commentId): bool | RedirectResponse
