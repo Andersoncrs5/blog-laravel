@@ -35,9 +35,9 @@
                 <a class="btn btn-outline-light d-block mt-1" href="{{ route('favoritePost.PostFavoriteOfUser') }}">See Post Favorite</a>
                 <a class="btn btn-outline-light d-block mt-1" href="{{ route('post.getAllOfUser') }}">See my posts</a>
                 <a class="btn btn-outline-light d-block mt-1" href="{{ route('comment.getAllCommentOfUser') }}">See my comments</a>
-                <a class="btn btn-outline-light d-block mt-1" href="{{ route('like.seeMyPostLike') }}">see My Post Like</a>
-                <a class="btn btn-outline-light d-block mt-1" href="{{ route('commentLike.seeMyCommentLike') }}">see My Comments Like</a>
-                
+                <a class="btn btn-outline-light d-block mt-1" href="{{ route('like.seeMyPostLike') }}">See My Post Like</a>
+                <a class="btn btn-outline-light d-block mt-1" href="{{ route('commentLike.seeMyCommentLike') }}">See My Comments Like</a>
+                <a class="btn btn-outline-light d-block mt-1" href="{{ route('commentFavorite.getAllCommentFavorite', ["id" => session('id') ]) }}">See My Comments Favorite</a>
                 
             @endif
             

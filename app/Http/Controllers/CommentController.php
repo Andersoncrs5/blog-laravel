@@ -66,7 +66,7 @@ class CommentController extends Controller
         try
         {
             DB::beginTransaction();
-            $post = PostController::get($id);
+            PostController::get($id);
 
             $data = $r->all();
 
@@ -87,7 +87,7 @@ class CommentController extends Controller
         }
     }
 
-    public function get(string $id)
+    public static function get(string $id)
     {
         try
         {
@@ -186,8 +186,10 @@ class CommentController extends Controller
             $like = $likeController->countLikeByComment($id);
             $unlike = $likeController->countUnlikeByComment($id);
 
+            $check = CommentFavoriteController::exists($comment->id);
+
             return view('comment.get', compact(
-                'comment', 'commentsOfComment',
+                'comment', 'commentsOfComment', 'check',
                 'res', 'like', 'unlike'
             ));
         }

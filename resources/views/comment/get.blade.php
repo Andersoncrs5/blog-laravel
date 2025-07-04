@@ -30,6 +30,11 @@
                                 <a href="{{ route('commentLike.remover', ['id' => $comment['id'] ] ) }}" class="btn btn-outline-light"><i class="fa-solid fa-thumbs-down"></i>{{ $unlike }}</a>
                             @endif
                         @endif
+                        @if ($check == true)
+                            <a href="{{ route('commentFavorite.remove', ['id' => $comment['id'] ] ) }}" class="btn btn-outline-light"><i class="fa-solid fa-bookmark"></i></a>
+                        @else
+                            <a href="{{ route('commentFavorite.save', ['id' => $comment['id'] ] ) }}" class="btn btn-outline-light"><i class="fa-regular fa-bookmark"></i></a>
+                        @endif
                     </div>
 
                     <div>

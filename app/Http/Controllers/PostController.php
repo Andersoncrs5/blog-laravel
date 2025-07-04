@@ -135,9 +135,9 @@ class PostController extends Controller
                 return redirect()->back()->with('error', 'id is required');
             }
 
-            $post = PostModel::find($id);
+            $post = PostModel::where('id', $id)->first();
 
-            if (!$post)
+            if ($post == null)
             {
                 return redirect()->back()->with('error', 'Post not found');
             }
@@ -159,9 +159,7 @@ class PostController extends Controller
             $post->viewed += 1;
             $post->save();
 
-            $favoritePostController = new FavoritePostController();
-
-            $check = $favoritePostController->exists($id);
+            $check = FavoritePostController::exists($id);
 
             $comments = CommentModel::where('post_id', $id)->where('parent_id', null)->get();
 

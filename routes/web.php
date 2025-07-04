@@ -6,6 +6,7 @@ use App\Http\Controllers\FavoritePostController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CommentFavoriteController;
 use App\Http\Controllers\CommentLikesController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostLikeController;
@@ -180,6 +181,14 @@ Route::prefix('password')->controller(RecoverPasswordController::class)->group(f
     });
 });
 
+Route::prefix('comment-favorite')->controller(CommentFavoriteController::class)->group(function () {
+    Route::middleware(IsLogged::class)->group(function () {
+        Route::get('get-all-comment-favorite/{id}', 'getAllCommentFavorite')->name('commentFavorite.getAllCommentFavorite');
+        Route::get('save/{id}', 'save')->name('commentFavorite.save');
+        Route::get('remove/{id}', 'remove')->name('commentFavorite.remove');
+
+    });
+});
 
 Route::fallback(function(){
     return redirect()->route('index')->with('warning', 'This rounte not exists');

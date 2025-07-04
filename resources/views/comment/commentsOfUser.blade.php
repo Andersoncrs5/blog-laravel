@@ -19,8 +19,10 @@
                             <div class="">
                                 <a class="btn btn-outline-light" href="{{ route('post.getPost', ['id' => $comment['post_id'] ] ) }}">SEE POST</a>
                                 <a class="btn btn-outline-light" href="{{ route('comment.getComment', ['id' => $comment['id'] ] ) }}">SEE COMMENTS</a>
-                                <a class="btn btn-outline-warning" href="{{ route('comment.update', ['id' => $comment['id'] ] ) }}">UPDATE</a>
-                                <a class="btn btn-outline-danger" href="{{ route('comment.delete', ['id' => $comment['id'] ] ) }}"><i class="fa-solid fa-trash"></i></a>
+                                @if ($comment['user_id'] == session('id'))
+                                    <a class="btn btn-outline-warning" href="{{ route('comment.update', ['id' => $comment['id'] ] ) }}">UPDATE</a>
+                                    <a class="btn btn-outline-danger" href="{{ route('comment.delete', ['id' => $comment['id'] ] ) }}"><i class="fa-solid fa-trash"></i></a>
+                                @endif
                             </div>
     
                             <div>

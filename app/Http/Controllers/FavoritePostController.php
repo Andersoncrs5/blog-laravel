@@ -44,7 +44,7 @@ class FavoritePostController extends Controller
         }
     }
 
-    function exists(string $postId)
+    public static function exists(string $postId)
     {
         try
         {

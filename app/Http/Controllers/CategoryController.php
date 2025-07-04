@@ -11,13 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    private $userController;
-
-    public function __construct(UserController $userController)
-    {
-        $this->userController = $userController;
-    }
-
     private function get(int $id)
     {
         try
@@ -50,9 +43,11 @@ class CategoryController extends Controller
             {
                 return redirect()->back()->with('warning', 'Name is required!');
             }
+
             $check = CategoryModel::where("name", $name)->first();
 
-            if ($check) {
+            if ($check) 
+            {
                 return redirect()->back()->with('warning', 'Name unavailable!');
             }
         }
@@ -105,7 +100,7 @@ class CategoryController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
 
             $data = $r->all();
 
@@ -157,7 +152,7 @@ class CategoryController extends Controller
     {
         try
         {
-            $user = $this->userController->get($id)->toArray();
+            $user = UserController::get($id)->toArray();
 
             print_r($user);
         }
@@ -171,7 +166,7 @@ class CategoryController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $data = $r->all();
 
             $category = $this->get($data['id']);
