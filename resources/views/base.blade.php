@@ -12,8 +12,12 @@
         <script src="{{ asset('assets/popper.min.js') }}"></script>
         <style>
             body {
-                background-color: rgb(59, 59, 59);
-                color:white;
+                /* background-color: rgb(59, 59, 59); */
+                background-repeat: no-repeat;
+                background-size: cover; /* Faz a imagem cobrir toda a área */
+                background-position: center center; /* Centraliza a imagem */
+                background-attachment: fixed; 
+                background-image: url({{ asset('assets/images/space_photo2.jpg') }});
             }
             .wLenghtHome {
                 width: 68%;
@@ -21,6 +25,13 @@
             .headerMain {
                 background-color: rgb(59, 59, 59);
             }
+            .bg-transparent {
+                background-color: transparent;
+            }
+            .optionsCategory:hover {
+                border: 1px solid white;
+            }
+            
         </style>
     </head>
 

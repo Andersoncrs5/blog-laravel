@@ -1,17 +1,19 @@
 <header class="w-100 headerMain " >
     <div class="container-fluid position-fixed top-0 end-0 row text-center border-bottom">
-        <div class="col-3 mt-2">
+        <div class="col-3 mt-2 text-light">
             <h3>Blog</h3>
         </div>
         <div class="col-6 mt-2">
             <form action="{{ route('post.searchByTitle') }}" method="GET" class="">
-                <div class="mb-3 input-group">
+                <div class="mb-3 input-group text-light">
                     <input
                         type="text"
                         class="form-control"
                         name="title"
                         value="{{ request('title') }}"
                         placeholder="Search"
+                        style="background-color:transparent; "
+
                     />
                     <button type="submit" class="btn btn-outline-light">
                         <i class="fa-solid fa-magnifying-glass"></i>

@@ -6,14 +6,14 @@
 
     <main class="container-fluid">
         <div class="position-fixed start-0 border-end" style="top: 10%; height: calc(100vh - 70px); width: 16.66%; z-index: 1020;">
-            <div class="mt-1 px-1 text-center">
+            <div class="mt-1 px-1 text-center bg-transparent" >
                 <h5>CATEGORIES</h5>
                 @if (collect($categories)->isEmpty())
                     <h3>NO CATEGORIES</h3>
                 @else
-                    <select class="form-select" size="5" onchange="redirectToCategory(this)">
+                    <select class="form-select text-center bg-transparent " size="5" onchange="redirectToCategory(this)">
                         @foreach ($categories as $category)
-                            <option value="{{ route('post.getByCategory', ['category' => $category['id']]) }}">
+                            <option id="optionsCategory" class="text-light" value="{{ route('post.getByCategory', ['category' => $category['id']]) }}">
                                 {{ $category['name'] }}
                             </option>
                         @endforeach
@@ -47,7 +47,7 @@
             @forelse ($posts as $post)
                 <div class="row m-2 border border-1 rounded-2 ">
                     <div class="col-12 text-center p-2 ">
-                        <h5>{{ $post->title }}</h5>
+                        <h5 class="text-light" >{{ $post->title }}</h5>
                     </div>
                     @include('components.line')
                     <div class="col-12 mb-2">
