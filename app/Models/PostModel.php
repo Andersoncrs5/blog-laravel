@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class PostModel extends Model
@@ -47,22 +49,22 @@ class PostModel extends Model
         });
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(UserModel::class);
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(CategoryModel::class);
     }
 
-    public function post_favorites()
+    public function post_favorites(): HasMany
     {
         return $this->hasMany(FavoritePostModel::class, 'post_id', 'id');
     }
 
-    public function post_likes()
+    public function post_likes(): HasMany
     {
         return $this->hasMany(PostLikesModel::class, 'post_id', 'id');
     }

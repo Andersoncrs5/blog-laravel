@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -45,29 +47,34 @@ class CommentModel extends Model
         });
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(UserModel::class, 'user_id');
     }
 
-    public function post()
+    public function post(): BelongsTo
     {
         return $this->belongsTo(PostModel::class, 'post_id');
     }
 
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(CommentModel::class, 'parent_id');
     }
 
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany(CommentModel::class, 'parent_id');
     }
 
-    public function comment_likes()
+    public function comment_likes(): HasMany
     {
         return $this->hasMany(CommentLikesModel::class, 'comment_id', 'id');
+    }
+
+    public function comment_favorites(): HasMany
+    {
+        return $this->hasMany(CommentFavoriteModel::class, 'comment_id', 'id');
     }
 
 }
