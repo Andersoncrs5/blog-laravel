@@ -96,8 +96,10 @@
                                         <a class=" my-1 btn btn-sm btn-primary" href="{{ route('comment.getAllCommentOfAnotherUser', ["id" => $user->id ]) }}" >SEE COMMENTS</a>                                    
                                         <a class=" my-1 btn btn-sm btn-primary" href="{{ route('commentLike.seeCommentLike', ["id" => $user->id ]) }}" >SEE COMMENT REACTION</a>
                                         <a class=" my-1 btn btn-sm btn-primary" href="{{ route('like.seePostLike', ["id" => $user->id ]) }}" >SEE POST REACTION</a>
+                                        
                                     @endif
                                     <a class=" my-1 btn btn-sm btn-primary" href="">SEE COMMENTS FAVORITE</a>
+                                    <a class=" my-1 btn btn-sm btn-primary" href="{{ route('commentFavorite.getAllCommentFavorite', ["id" => $user->id ]) }}">SEE COMMENTS FAVORITE</a>
                                 </ul>
                             </div>
                             
