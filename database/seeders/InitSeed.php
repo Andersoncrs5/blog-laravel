@@ -11,17 +11,6 @@ class InitSeed extends Seeder
 {
     public function run(): void
     {
-        // Usuários admin
-        for ($i = 0; $i < 15; $i++) {
-            DB::table('user')->insert([
-                'name' => 'Admin User' . $i,
-                'email' => 'admin' . $i . '@example.com',
-                'password' => Hash::make('12345678', ['rounds' => 4]),
-                'is_adm' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
 
         // Usuários comuns
         for ($i = 0; $i < 150; $i++) {
