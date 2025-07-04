@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostCreatehRequest extends FormRequest
+class PostCreateRequest extends FormRequest
 {
     
     public function authorize(): bool
@@ -22,6 +22,7 @@ class PostCreatehRequest extends FormRequest
         return [
             'title' => ['required', 'max:500'],
             'content' => ['required', 'max:3000', 'min:50'],
+            'category_id' => ['required']
         ];
     }
 
@@ -34,6 +35,8 @@ class PostCreatehRequest extends FormRequest
             'content.required' => 'The content is required.',
             'content.min' => 'The content must be at least 50 characters long.',
             'content.max' => 'The content must not exceed 3000 characters.',
+
+            'category_id.required' => 'The category is required.',
         ];
     }
 

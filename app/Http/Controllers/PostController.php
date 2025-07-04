@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PostCreatehRequest;
+use App\Http\Requests\PostCreateRequest;
 use App\Http\Requests\PostSearchRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Http\Services\enums\SumOrRed;
@@ -47,38 +47,36 @@ class PostController extends Controller
         }
     }
 
-    public function saving(PostCreatehRequest $r): RedirectResponse
+    public function saving(PostCreateRequest $r): RedirectResponse
     {
         try 
         {            
-            DB::transaction(function () use ($r) 
-            {    
-                $data = $r->validated();
-   
-                $userId = session('id');
-                
-                if (!$userId) { throw new \Exception('User not authenticated.'); }
+            DB::beginTransaction();
 
-                $data['user_id'] = $userId;
+            $data = $r->validated();
 
-                PostModel::create($data);                 
-                $metric = UserMetricService::get_metric($userId);
-                UserMetricService::sum_or_red_posts_count($metric, SumOrRed::SUM);
-            });
+            $userId = session('id');
 
+            $data['user_id'] = $userId;
+
+            PostModel::create($data);                 
             
+            $metric = UserMetricService::get_metric($userId);
+            UserMetricService::sum_or_red_posts_count($metric, SumOrRed::SUM);
+
+            DB::commit();
             return redirect()->route('index')->with('success', 'Post criado com sucesso!!!');
 
-        } catch (\Throwable $th) {
-            
-            if ($th->getMessage() === 'User not authenticated.') {
-                 return redirect()->route('login')->with('error', 'Você precisa estar logado para criar um post.');
-            }
-
+        } 
+        catch (\Throwable $th) 
+        {
+            echo '<pre>';
+            print_r($th);
+            die();
+            DB::rollBack();
             return redirect()->route('index')->with('error', 'Erro ao salvar o post. Por favor, tente novamente mais tarde.');
         }
     }
-
 
     public function getAllOfUser()
     {
