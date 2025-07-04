@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\enums\SumOrRed;
+use App\Http\Services\UserMetricService;
 use App\Models\CommentLikesModel;
 use App\Models\CommentModel;
 use Illuminate\Http\Request;
@@ -42,7 +44,7 @@ class CommentLikesController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $postControl = new PostController();
             $post = $postControl->get($commentId);
 
@@ -57,13 +59,15 @@ class CommentLikesController extends Controller
             {
                 $existingLike->forceDelete();
             }
-
             
             CommentLikesModel::create([
                 'is_like' => true,
                 'user_id' => session('id'),
                 'comment_id' => $commentId,
             ]);
+
+            $metric = UserMetricService::get_metric(session('id'));
+            UserMetricService::sum_or_red_likes_given_count_in_comment($metric, SumOrRed::SUM);
 
             DB::commit();
             return redirect()->back()->with('success', 'Post liked');
@@ -80,12 +84,23 @@ class CommentLikesController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $postControl = new PostController();
             $postControl->get($commentId);
             $like = $this->get($commentId);
 
             $like->forceDelete();
+
+            $metric = UserMetricService::get_metric(session('id'));
+
+            if ($like->is_like == true)
+            {
+                UserMetricService::sum_or_red_likes_given_count_in_comment($metric, SumOrRed::RED);
+            }
+            else 
+            {
+                UserMetricService::sum_or_red_dislikes_given_count_in_comment($metric, SumOrRed::RED);
+            }
 
             DB::commit();
             return redirect()->back()->with('success', 'Like or unlike removed');
@@ -101,7 +116,7 @@ class CommentLikesController extends Controller
     {
         try
         {
-            DB::transaction();
+            DB::beginTransaction();
             $postControl = new PostController();
             $post = $postControl->get($commentId);
 
@@ -115,15 +130,17 @@ class CommentLikesController extends Controller
                 return redirect()->back()->with('error', 'You already unliked this post');
             }
 
-            if ($existingLike) {
-                $existingLike->forceDelete();
-            }
+            if ($existingLike) { $existingLike->forceDelete(); }
+            
+            $metric = UserMetricService::get_metric(session('id'));
 
             CommentLikesModel::create([
                 'is_like' => false,
                 'user_id' => session('id'),
                 'comment_id' => $commentId,
             ]);
+
+            UserMetricService::sum_or_red_dislikes_given_count_in_comment($metric, SumOrRed::RED);
 
             DB::commit();
             return redirect()->back()->with('success', 'Post unliked');

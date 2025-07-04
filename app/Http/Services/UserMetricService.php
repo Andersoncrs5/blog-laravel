@@ -7,7 +7,6 @@ use App\Models\UserMetricModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 
-
 class UserMetricService 
 {
     public static function get_metric(int $id): UserMetricModel | RedirectResponse

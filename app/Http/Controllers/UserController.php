@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Http\Services\enums\SumOrRed;
 use App\Http\Services\UserMetricService;
 use App\Models\CategoryModel;
 use App\Models\FollowersModel;
@@ -220,7 +221,11 @@ class UserController extends Controller
 
             $user->update($data);
 
+            $metric = UserMetricService::get_metric($user->id);
+            UserMetricService::sum_or_red_play_list_count($metric, SumOrRed::SUM);
+
             DB::commit();
+
             return redirect()->route('index')->with('success', 'Update successful!');
         }
         catch (\Exception $e)

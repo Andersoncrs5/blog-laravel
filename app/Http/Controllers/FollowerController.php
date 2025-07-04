@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\enums\SumOrRed;
+use App\Http\Services\UserMetricService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\FollowersModel;
@@ -9,37 +11,50 @@ use App\Models\UserModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
-class FollowerController extends Controller
+class FollowController extends Controller 
 {
     public function follow(int $id): RedirectResponse
     {
         try 
         {
-            DB::transaction();
-            $userId = session('id');
+            DB::transaction(function () use ($id) 
+            { 
+                $userId = session('id');
 
-            if ($userId == $id) 
-            {
-                return redirect()->back()->with('error', 'Você não pode seguir a si mesmo!');
-            }
+                if (!$userId) 
+                {
+                    throw new \Exception('Usuário não autenticado.'); 
+                }
 
-            if (FollowersModel::where('follower_id', $userId)->where('followed_id', $id)->exists()) 
-            {
-                return redirect()->back()->with('success', 'Você já está seguindo este usuário.');
-            }
+                if ($userId == $id) 
+                {
+                    return redirect()->back()->with('success', 'You cannot to follow yourself!!!');
+                }
 
-            FollowersModel::create([
-                'follower_id' => $userId,
-                'followed_id' => $id,
-            ]);
+                if (FollowersModel::where('follower_id', $userId)->where('followed_id', $id)->exists()) 
+                { 
+                    return redirect()->back()->with('success', 'You already follow this user!');
+                }
 
-            DB::commit();
-            return redirect()->back()->with('success', 'Agora você está seguindo este usuário!');
+                FollowersModel::create([
+                    'follower_id' => $userId,
+                    'followed_id' => $id,
+                ]);
+
+                $followerMetric = UserMetricService::get_metric($userId);
+                UserMetricService::sum_or_red_following_count($followerMetric, SumOrRed::SUM);
+
+                $followedMetric = UserMetricService::get_metric($id);                
+                UserMetricService::sum_or_red_followers_count($followedMetric, SumOrRed::SUM);
+            });
+
+            
+            return redirect()->back()->with('success', 'Now you are following this user!');
+
         } 
-        catch (\Exception $e) 
-        {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Erro ao seguir o usuário.');
+        catch (\Throwable $e) 
+        {   
+            return redirect()->back()->with('error', 'Error the to follow the user!Please try again later');
         }
     }
 
@@ -47,20 +62,36 @@ class FollowerController extends Controller
     {
         try 
         {
-            DB::transaction();
-            $userId = session('id');
+            DB::transaction(function () use ($id) 
+            { 
+                $userId = session('id');
 
-            FollowersModel::where('follower_id', $userId)
-                ->where('followed_id', $id)
-                ->delete();
+                $deleted = FollowersModel::where('follower_id', $userId)
+                    ->where('followed_id', $id)
+                    ->delete();
 
-            DB::commit();
-            return redirect()->back()->with('success', 'Você deixou de seguir este usuário.');
+                if ($deleted) 
+                {                    
+                    $followerMetric = UserMetricService::get_metric($userId);
+                    
+                    UserMetricService::sum_or_red_following_count($followerMetric, SumOrRed::RED);
+                    
+                    $followedMetric = UserMetricService::get_metric($id);
+                    
+                    UserMetricService::sum_or_red_followers_count($followedMetric, SumOrRed::RED);
+                } 
+                else 
+                {    
+                    return redirect()->back()->with('success', 'You leted follow this user');
+                }
+            });
+
+            return redirect()->back()->with('success', 'You not follow the user!');
+
         } 
-        catch (\Exception $e) 
+        catch (\Throwable $e) 
         {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Erro ao deixar de seguir o usuário.');
+            return redirect()->back()->with('error', 'Erro ao deixar de seguir o usuário. Por favor, tente novamente.');
         }
     }
 
