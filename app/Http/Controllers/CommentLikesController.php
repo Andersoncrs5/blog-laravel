@@ -44,7 +44,7 @@ class CommentLikesController extends Controller
     {
         $comments = CommentModel::select('comments.*')
         ->join('comment_likes', 'comments.id', '=', 'comment_likes.comment_id')
-        ->where('comment_likes.user_id', session('id'))
+        ->where('comment_likes.user_id', $id)
         ->paginate(50);
 
         return view('comment.getAll', compact('comments'));

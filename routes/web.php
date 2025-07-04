@@ -154,6 +154,7 @@ Route::prefix('like')->controller(PostLikeController::class)->group(function() {
         Route::get('like/{id}', "like")->name('like.like');
         Route::get('unlike/{id}', "unlike")->name('like.unlike');
         Route::get('see-my-post-like', "seeMyPostLike")->name('like.seeMyPostLike');
+        Route::get('see-post-like/{id}', "seePostLike")->name('like.seePostLike');
         Route::get('api/get/{id}', "get")->name('like.get');
         Route::get('remover/{id}', "remover")->name('like.remover');
     });

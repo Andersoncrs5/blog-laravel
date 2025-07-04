@@ -42,6 +42,16 @@ class PostLikeController extends Controller
         return view('post.getAll', compact('posts'));
     }
 
+    public function seePostLike(int $id)
+    {
+        $posts = PostModel::select('posts.*')
+            ->join('post_likes', 'posts.id', '=', 'post_likes.post_id')
+            ->where('post_likes.user_id', $id)
+            ->paginate(50);
+
+        return view('post.getAll', compact('posts'));
+    }
+
     public function like(string $postId)
     {
         try
