@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>@yield('title')</title>
+        <title  >@yield('title')</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -31,7 +31,24 @@
             .optionsCategory:hover {
                 border: 1px solid white;
             }
+            .input-transparent {
+                background-color: transparent;
+                color: white;
+                border: 1px solid white;
+            }
+            .select-transparent {
+                background-color: transparent !important; 
+                border: 1px solid white; 
+                color: white; 
+                -webkit-appearance: none; 
+                -moz-appearance: none;
+                appearance: none;
+            }
             
+            .select-transparent option {
+                background-color: rgb(0, 0, 0); 
+                color: white;
+            }
         </style>
     </head>
 

@@ -60,10 +60,12 @@ class PostController extends Controller
 
             $data['user_id'] = $userId;
 
-            PostModel::create($data);                 
+            $postCreated = PostModel::create($data);                 
             
             $metric = UserMetricService::get_metric($userId);
             UserMetricService::sum_or_red_posts_count($metric, SumOrRed::SUM);
+
+            PostMetricService::create_metric($postCreated->id);
 
             DB::commit();
             return redirect()->route('index')->with('success', 'Post criado com sucesso!!!');

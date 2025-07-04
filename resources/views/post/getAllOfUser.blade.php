@@ -20,7 +20,7 @@
             <div style="width: 85%;" class="mt-2 mx-auto  p-2 border border-2 rounded-2">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h3>{{ $post['title'] }}</h3>
+                        <h3 class="text-light" >{{ $post['title'] }}</h3>
                     </div>
                     @include('../components.line')
                     @if ($post["user_id"] == session("id") )
@@ -36,17 +36,17 @@
 
                                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
-                                            <div class="modal-content bg-secondary">
+                                            <div class="modal-content bg-transparent border">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <h5 class="modal-title text-light " id="exampleModalLabel">Confirm Delete</h5>
+                                                    <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <h2 class="fs-5"></h2>
-                                                    <h3>Do you wish to delete this post?</h3>
+                                                    <h3 class="text-light" >Do you wish to delete this post?</h3>
                                                     <hr>
                                                     <h3 class="text-warning" >Carefull!!!</h3>
-                                                    <p class="fs-5">After you delete this post. there will be no way to recover it! Do you want to continue?</p>
+                                                    <p class="fs-5 text-light"  >After you delete this post. there will be no way to recover it! Do you want to continue?</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
