@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         
-            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('restrict');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('restrict');
         });
         
         Schema::table('comments', function (Blueprint $table) {

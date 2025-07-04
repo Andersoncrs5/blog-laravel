@@ -17,8 +17,8 @@ return new class extends Migration
             $table->uuid('comment_id');
             $table->boolean('is_like')->default(true);
         
-            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('restrict');
+            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('restrict');
         });
     }
 

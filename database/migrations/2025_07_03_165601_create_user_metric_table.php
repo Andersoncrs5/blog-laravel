@@ -32,7 +32,7 @@ return new class extends Migration
             $table->bigInteger("preference_count")->default(0);
             $table->unsignedBigInteger('user_id')->unique();
         
-            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
         });

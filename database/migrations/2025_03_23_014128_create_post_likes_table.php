@@ -19,8 +19,8 @@ return new class extends Migration
             $table->boolean('is_like')->default(true);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         
-            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('restrict');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('restrict');
         });
     }
 
