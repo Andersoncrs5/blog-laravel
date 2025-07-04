@@ -11,7 +11,7 @@ use App\Models\UserModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
-class FollowController extends Controller 
+class FollowerController extends Controller 
 {
     public function follow(int $id): RedirectResponse
     {
@@ -47,7 +47,6 @@ class FollowController extends Controller
                 $followedMetric = UserMetricService::get_metric($id);                
                 UserMetricService::sum_or_red_followers_count($followedMetric, SumOrRed::SUM);
             });
-
             
             return redirect()->back()->with('success', 'Now you are following this user!');
 

@@ -164,7 +164,8 @@ Route::prefix('comment-like')->controller(CommentLikesController::class)->group(
         Route::get('like/{id}', "like")->name('commentLike.like');
         Route::get('unlike/{id}', "unlike")->name('commentLike.unlike');
         Route::get('see-my-comments-likes', "seeMyCommentLike")->name('commentLike.seeMyCommentLike');
-        Route::get('api/get/{id}', "get")->name('commentLike.get');
+        Route::get('see-my-comments-likes/{id}', "seeCommentLike")->name('commentLike.seeCommentLike');
+        Route::get('get/{id}', "get")->name('commentLike.get');
         Route::get('remover/{id}', "remover")->name('commentLike.remover');
     });
 });

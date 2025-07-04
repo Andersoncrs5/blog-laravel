@@ -40,6 +40,16 @@ class CommentLikesController extends Controller
         return view('comment.getAll', compact('comments'));
     }
 
+    public function seeCommentLike(int $id)
+    {
+        $comments = CommentModel::select('comments.*')
+        ->join('comment_likes', 'comments.id', '=', 'comment_likes.comment_id')
+        ->where('comment_likes.user_id', session('id'))
+        ->paginate(50);
+
+        return view('comment.getAll', compact('comments'));
+    }
+
     public function like(string $commentId)
     {
         try
